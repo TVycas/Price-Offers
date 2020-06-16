@@ -2,77 +2,47 @@ package com.example.vewviewtests;
 
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class MainActivity extends AppCompatActivity {
 
-    private final String TAG = "MainActivity";
-    private WebView myWebView;
+    private static final String TAG = MainActivity.class.getName();
     private MainActivityViewModel viewModel;
+    private TextView timerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        timerText = findViewById(R.id.textview);
 
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
-
-//        myWebView = findViewById(R.id.webview);
-//        myWebView.setVisibility(View.GONE);
-//        myWebView.addJavascriptInterface(new ScrapingJavaScriptInterface(), "HTMLOUT");
-//
-//        myWebView.getSettings().setJavaScriptEnabled(true);
-//
-//        myWebView.setWebViewClient(new WebViewClient() {
-//            int timesLoaded = 0;
-//
-//            @Override
-//            public void onPageFinished(WebView view, String url) {
-//                Log.d(TAG, "onFinished");
-//
-//                if (timesLoaded < 5) {
-//                    myWebView.evaluateJavascript("javascript:document.getElementsByClassName('btn grey')[0].click();",
-//                            new ValueCallback<String>() {
-//                                @Override
-//                                public void onReceiveValue(String s) {
-//                                    Log.d("LogName", "TESTAS"); // Log is written, but s is always null
-//                                }
-//                            });
-//
-//                    timesLoaded++;
-//                } else {
-//                    myWebView.evaluateJavascript("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');", new ValueCallback<String>() {
-//                        @Override
-//                        public void onReceiveValue(String value) {
-//                            Log.d(TAG, value);
-//                        }
-//                    });
-////                    myWebView.evaluateJavascript("javascript:document.getElementsByTagName('html')[0].innerHTML;", new ValueCallback<String>() {
-////                        @Override
-////                        public void onReceiveValue(String value) {
-////                            new ScrapingJavaScriptInterface().processHTML("<head>"+value+"</head>");
-////                        }
-////                    });
-//                }
-//            }
-//        });
-//
-//        myWebView.loadUrl("https://www.maxima.lt/akcijos");
 
     }
 
 
     public void simulateClick(View view) {
-//        myWebView.evaluateJavascript("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');", new ValueCallback<String>() {
-//            @Override
-//            public void onReceiveValue(String value) {
-//
-//            }
-//        });
         initScraping();
+        startTimer();
+    }
+
+    private void startTimer() {
+//        while(true){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        timerText.setText(dtf.format(now));
+//            try {
+//                sleep(300);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     private void initScraping() {

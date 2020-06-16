@@ -9,13 +9,13 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class Scraper {
+public class MaximaScraper {
 
-    private final String TAG = "Scraper";
+    private static final String TAG = MaximaScraper.class.getName();
     private final String html;
     private ArrayList<Offer> offers;
 
-    public Scraper(String html) {
+    public MaximaScraper(String html) {
         this.html = html;
     }
 

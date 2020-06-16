@@ -16,8 +16,9 @@
         android:text="Load click"
         tools:layout_editor_absoluteX="159dp" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/textview"
+        android:text="Init Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

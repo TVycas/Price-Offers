@@ -8,14 +8,14 @@ import java.util.ArrayList;
 // An instance of this class will be registered as a JavaScript interface
 public class JavaScriptInterface {
 
-    private final String TAG = "JavaScriptInterface";
+    private static final String TAG = JavaScriptInterface.class.getName();
     private ArrayList<Offer> offers = new ArrayList<>();
 
     @JavascriptInterface
-    public void scrapeHTML(String html) {
+    public void scrapeMaximaHTML(String html) {
         Log.d(TAG, String.valueOf(html.length()));
 
-        Scraper sc = new Scraper(html);
+        MaximaScraper sc = new MaximaScraper(html);
         offers = sc.scrapeOffers();
     }
 
