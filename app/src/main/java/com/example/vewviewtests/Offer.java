@@ -1,12 +1,14 @@
 package com.example.vewviewtests;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "offer_table")
 public class Offer {
 
-    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @PrimaryKey
     private final String title;
 
     private final int percentage;
@@ -28,5 +30,21 @@ public class Offer {
                 + "\nper = " + percentage
                 + "\nprice = " + price
                 + "\nimg = " + img;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getPercentage() {
+        return percentage;
+    }
+
+    public String getImg() {
+        return img;
     }
 }

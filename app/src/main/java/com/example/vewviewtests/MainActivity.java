@@ -2,47 +2,44 @@ package com.example.vewviewtests;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
     private MainActivityViewModel viewModel;
-    private TextView timerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        timerText = findViewById(R.id.textview);
+
+        // Set up the RecyclerView.
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final OfferListAdapter adapter = new OfferListAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
 
+        viewModel.getAllOffers().observe(this, new Observer<List<Offer>>() {
+            @Override
+            public void onChanged(List<Offer> offers) {
+                adapter.setOffers(offers);
+            }
+        });
     }
 
 
     public void simulateClick(View view) {
         initScraping();
-        startTimer();
-    }
-
-    private void startTimer() {
-//        while(true){
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        timerText.setText(dtf.format(now));
-//            try {
-//                sleep(300);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
 
     private void initScraping() {

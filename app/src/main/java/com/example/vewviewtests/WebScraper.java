@@ -51,7 +51,7 @@ public class WebScraper {
                                     Log.d(TAG, "Maxima scraping finished");
                                     // Scraping finished so we can get the offers
                                     offers.addAll(javaScriptInterface.getOffers());
-                                    repo.updateDB(offers);
+                                    repo.insert(offers);
                                 }
                             });
                 }
