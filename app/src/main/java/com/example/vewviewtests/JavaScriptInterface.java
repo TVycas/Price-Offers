@@ -1,6 +1,5 @@
 package com.example.vewviewtests;
 
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import java.util.ArrayList;
@@ -13,8 +12,6 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public void scrapeMaximaHTML(String html) {
-        Log.d(TAG, String.valueOf(html.length()));
-
         MaximaScraper sc = new MaximaScraper(html);
         offers = sc.scrapeOffers();
     }

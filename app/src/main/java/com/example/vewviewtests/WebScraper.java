@@ -3,8 +3,13 @@ package com.example.vewviewtests;
 import android.app.Application;
 import android.util.Log;
 import android.webkit.ValueCallback;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -25,10 +30,24 @@ public class WebScraper {
         final WebView wv = new WebView(application);
         wv.addJavascriptInterface(javaScriptInterface, "ANDROID");
 
-        wv.getSettings().setJavaScriptEnabled(true);
+        WebSettings webSettings = wv.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setLoadsImagesAutomatically(false);
+
 
         wv.setWebViewClient(new WebViewClient() {
             int timesLoaded = 0;
+
+            @Nullable
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                String uri = request.getUrl().toString();
+                if (uri.contains("css") || uri.contains("ico") || uri.contains("facebook") || uri.contains("google")) {
+                    return new WebResourceResponse("text/javascript", "UTF-8", null);
+                }
+
+                return super.shouldInterceptRequest(view, request);
+            }
 
             @Override
             public void onPageFinished(WebView view, String url) {
