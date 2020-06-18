@@ -3,4 +3,7 @@
     <string name="offer_title_placeolder">Offer title</string>
     <string name="offer_price_placeholder">Offer Price</string>
     <string name="no_offer">Prekė nepasiekiama</string>
+
+    <string name="tab_label1">Prekių Pasirinkimas</string>
+    <string name="tab_label2">Krepšelis</string>
 </resources>
