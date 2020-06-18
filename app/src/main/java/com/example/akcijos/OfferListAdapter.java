@@ -1,4 +1,4 @@
-package com.example.vewviewtests;
+package com.example.akcijos;
 
 import android.content.Context;
 import android.view.LayoutInflater;

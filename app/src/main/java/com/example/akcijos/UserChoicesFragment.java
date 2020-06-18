@@ -1,4 +1,4 @@
-package com.example.vewviewtests;
+package com.example.akcijos;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AllOffersFragment extends Fragment {
+public class UserChoicesFragment extends Fragment {
 
-    public AllOffersFragment() {
+    public UserChoicesFragment() {
         // Required empty public constructor
     }
 
@@ -22,6 +22,6 @@ public class AllOffersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_offers, container, false);
+        return inflater.inflate(R.layout.fragment_user_choices, container, false);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.vewviewtests;
+package com.example.akcijos;
 
 import android.app.Application;
 import android.util.Log;

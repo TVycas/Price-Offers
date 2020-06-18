@@ -1,4 +1,4 @@
-package com.example.vewviewtests;
+package com.example.akcijos;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
