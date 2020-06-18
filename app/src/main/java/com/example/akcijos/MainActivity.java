@@ -5,13 +5,9 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,21 +37,6 @@ public class MainActivity extends AppCompatActivity {
         final PagerAdapter pagerAdapter = new PagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
-
-//        // Set up the RecyclerView.
-//        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-//        final OfferListAdapter offerListAdapter = new OfferListAdapter(this);
-//        recyclerView.setAdapter(offerListAdapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Observe ViewModel
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
-        viewModel.getAllOffers().observe(this, new Observer<List<Offer>>() {
-            @Override
-            public void onChanged(List<Offer> offers) {
-//                offerListAdapter.setOffers(offers);
-            }
-        });
 
         // Setting a listener for tab changes.
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
