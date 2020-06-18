@@ -53,6 +53,16 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     static class OfferViewHolder extends RecyclerView.ViewHolder {
         private final TextView offerPriceItemView;
         private final TextView offerTitleItemView;

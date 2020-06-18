@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Observe ViewModel
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
-
         viewModel.getAllOffers().observe(this, new Observer<List<Offer>>() {
             @Override
             public void onChanged(List<Offer> offers) {

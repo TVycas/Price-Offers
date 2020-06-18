@@ -21,7 +21,6 @@ public class OffersRepository {
         allOffers = offerDao.getAllOffers();
 
         webScraper = new WebScraper(application, this);
-        webScraper.startScrapingMaxima();
     }
 
     LiveData<List<Offer>> getAllOffers() {

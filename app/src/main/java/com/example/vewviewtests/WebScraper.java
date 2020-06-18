@@ -68,7 +68,7 @@ public class WebScraper {
                                 @Override
                                 public void onReceiveValue(String value) {
                                     Log.d(TAG, "Maxima scraping finished");
-                                    // Scraping finished so we can get the offers
+                                    // Scraping finished so we can insert the offers to the database
                                     offers.addAll(javaScriptInterface.getOffers());
                                     repo.insert(offers);
                                 }
