@@ -1,4 +1,4 @@
-package com.example.akcijos;
+package com.example.akcijos.ui;
 
 import android.os.Bundle;
 
@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.akcijos.MainActivityViewModel;
+import com.example.akcijos.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {

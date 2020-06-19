@@ -1,4 +1,4 @@
-package com.example.akcijos;
+package com.example.akcijos.ui;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

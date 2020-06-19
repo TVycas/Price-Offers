@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.akcijos.database.Offer;
+
 import java.util.List;
 
 public class MainActivityViewModel extends AndroidViewModel {

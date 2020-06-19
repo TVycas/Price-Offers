@@ -1,6 +1,8 @@
-package com.example.akcijos;
+package com.example.akcijos.scrapers;
 
 import android.webkit.JavascriptInterface;
+
+import com.example.akcijos.database.Offer;
 
 import java.util.ArrayList;
 

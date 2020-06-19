@@ -1,6 +1,8 @@
-package com.example.akcijos;
+package com.example.akcijos.scrapers;
 
 import android.util.Log;
+
+import com.example.akcijos.database.Offer;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

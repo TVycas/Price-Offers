@@ -1,4 +1,4 @@
-package com.example.akcijos;
+package com.example.akcijos.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

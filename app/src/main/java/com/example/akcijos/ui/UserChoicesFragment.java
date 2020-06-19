@@ -1,4 +1,4 @@
-package com.example.akcijos;
+package com.example.akcijos.ui;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +12,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.akcijos.MainActivityViewModel;
+import com.example.akcijos.R;
+import com.example.akcijos.database.Offer;
 
 import java.util.List;
 

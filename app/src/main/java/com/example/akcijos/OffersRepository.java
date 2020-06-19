@@ -5,6 +5,11 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.akcijos.database.Offer;
+import com.example.akcijos.database.OfferDao;
+import com.example.akcijos.database.OfferRoomDatabase;
+import com.example.akcijos.scrapers.WebScraper;
+
 import java.util.List;
 
 public class OffersRepository {

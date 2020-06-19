@@ -1,4 +1,4 @@
-package com.example.akcijos;
+package com.example.akcijos.ui;
 
 import android.content.ClipData;
 import android.content.Context;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.akcijos.R;
+import com.example.akcijos.database.Offer;
 
 import java.util.List;
 
