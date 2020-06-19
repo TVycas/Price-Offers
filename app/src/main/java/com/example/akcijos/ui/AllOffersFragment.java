@@ -56,9 +56,11 @@ public class AllOffersFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton view, boolean isChecked, int position) {
                 Offer offer = offerListAdapter.getOfferAtPosition(position);
-                Log.d(TAG, "onCheckedChanged: " + offer);
-                offer.setIsSelected(isChecked);
-                viewModel.updateOffer(offer);
+                if (offer.getIsSelected() != isChecked) {
+                    Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
+                    offer.setIsSelected(isChecked);
+                    viewModel.updateOffer(offer);
+                }
             }
         });
 
@@ -78,9 +80,5 @@ public class AllOffersFragment extends Fragment {
                 viewModel.initScraping();
             }
         });
-    }
-
-    public void simulateClick(View view) {
-        viewModel.initScraping();
     }
 }

@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Offer.class}, version = 3, exportSchema = false)
+@Database(entities = {Offer.class}, version = 4, exportSchema = false)
 public abstract class OfferRoomDatabase extends RoomDatabase {
     private static OfferRoomDatabase INSTANCE;
 

@@ -56,14 +56,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-//    public void simulateClick(View view) {
-//        initScraping();
-//    }
-//
-//    private void initScraping() {
-//        viewModel.initScraping();
-//    }
-
 }

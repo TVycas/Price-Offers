@@ -1,6 +1,5 @@
 package com.example.akcijos.ui;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +19,12 @@ import java.util.List;
 class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHolder> {
 
     private static CheckedChangeListener checkedListener;
+    final LayoutInflater inflater;
+    private List<Offer> offers;
+
 
     @Override
-    public void onBindViewHolder(@NonNull OfferListAdapter.OfferViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OfferListAdapter.OfferViewHolder holder, final int position) {
         if (offers != null) {
 
             Offer current = offers.get(position);
@@ -36,15 +38,23 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             }
             // TODO add previous price
             holder.offerShopName.setText(current.getSHOP_NAME());
+
+            // Remove the old listener and replace with new one
+            holder.checkBox.setOnCheckedChangeListener(null);
             holder.checkBox.setChecked(current.getIsSelected());
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (checkedListener != null) {
+                        checkedListener.onCheckedChanged(buttonView, isChecked, position);
+                    }
+                }
+            });
         } else {
             // Covers the case of data not being ready yet.
             holder.offerTitleItemView.setText(R.string.no_offer);
         }
     }
-
-    final LayoutInflater inflater;
-    private List<Offer> offers;
 
     OfferListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
@@ -89,12 +99,6 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         OfferListAdapter.checkedListener = listener;
     }
 
-    interface OnItemCheckListener {
-        void onItemCheck(ClipData.Item item);
-
-        void onItemUncheck(ClipData.Item item);
-    }
-
     public interface CheckedChangeListener {
         void onCheckedChanged(CompoundButton view, boolean isChecked, int position);
     }
@@ -111,16 +115,6 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             offerPriceItemView = itemView.findViewById(R.id.offer_price_textview);
             offerShopName = itemView.findViewById(R.id.shop_name);
             checkBox = itemView.findViewById(R.id.cart_checkbox);
-
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (checkedListener != null) {
-                        checkedListener.onCheckedChanged(buttonView, isChecked, getAdapterPosition());
-                    }
-                }
-            });
-
         }
     }
 }

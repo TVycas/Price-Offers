@@ -1,14 +1,15 @@
 package com.example.akcijos.database;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "offer_table")
 public class Offer {
 
-    @NonNull
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
     private final String TITLE;
 
     private final int PERCENTAGE;
@@ -22,6 +23,17 @@ public class Offer {
     private boolean isSelected;
 
     public Offer(String TITLE, int PERCENTAGE, double PRICE, String IMG, String SHOP_NAME) {
+        this.TITLE = TITLE;
+        this.PERCENTAGE = PERCENTAGE;
+        this.PRICE = PRICE;
+        this.IMG = IMG;
+        this.SHOP_NAME = SHOP_NAME;
+        this.isSelected = false;
+    }
+
+    @Ignore
+    public Offer(int id, String TITLE, int PERCENTAGE, double PRICE, String IMG, String SHOP_NAME) {
+        this.id = id;
         this.TITLE = TITLE;
         this.PERCENTAGE = PERCENTAGE;
         this.PRICE = PRICE;
@@ -58,6 +70,14 @@ public class Offer {
 
     public String getSHOP_NAME() {
         return SHOP_NAME;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean getIsSelected() {
