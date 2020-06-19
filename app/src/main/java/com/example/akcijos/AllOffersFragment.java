@@ -51,12 +51,10 @@ public class AllOffersFragment extends Fragment {
         offerListAdapter.setOnCheckedChangedListener(new OfferListAdapter.CheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton view, boolean isChecked, int position) {
-                if (isChecked) {
-                    Offer offer = offerListAdapter.getOfferAtPosition(position);
-                    Log.d(TAG, "onCheckedChanged: " + offer);
-                }
-
-                // ViewModel.updateUserCart(offer)
+                Offer offer = offerListAdapter.getOfferAtPosition(position);
+                Log.d(TAG, "onCheckedChanged: " + offer);
+                offer.setIsSelected(isChecked);
+                viewModel.updateOffer(offer);
             }
         });
 

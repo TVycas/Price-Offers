@@ -19,6 +19,10 @@ public class MainActivityViewModel extends AndroidViewModel {
         allOffers = repo.getAllOffers();
     }
 
+    public void updateOffer(Offer newOffer) {
+        repo.update(newOffer);
+    }
+
 
     public void initScraping() {
         repo.startScraping();

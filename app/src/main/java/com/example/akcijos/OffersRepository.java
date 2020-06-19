@@ -36,9 +36,9 @@ public class OffersRepository {
         new insertAsyncTask(offerDao).execute(offers);
     }
 
-//    public void update(Offer offer)  {
-//        new updateOfferAsyncTask(offerDao).execute(offer);
-//    }
+    public void update(Offer offer) {
+        new updateOfferAsyncTask(offerDao).execute(offer);
+    }
 
 //    public void deleteAll()  {
 //        new deleteAllOffersAsyncTask(offerDao).execute();
@@ -61,6 +61,20 @@ public class OffersRepository {
             for (Offer offer : lists[0]) {
                 asyncTaskDao.insert(offer);
             }
+            return null;
+        }
+    }
+
+    private class updateOfferAsyncTask extends AsyncTask<Offer, Void, Void> {
+        private OfferDao asyncTaskDao;
+
+        public updateOfferAsyncTask(OfferDao offerDao) {
+            asyncTaskDao = offerDao;
+        }
+
+        @Override
+        protected Void doInBackground(Offer... offers) {
+            asyncTaskDao.update(offers[0]);
             return null;
         }
     }

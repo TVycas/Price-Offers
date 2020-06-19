@@ -19,12 +19,15 @@ public class Offer {
 
     private final String SHOP_NAME;
 
+    private boolean isSelected;
+
     public Offer(String TITLE, int PERCENTAGE, double PRICE, String IMG, String SHOP_NAME) {
         this.TITLE = TITLE;
         this.PERCENTAGE = PERCENTAGE;
         this.PRICE = PRICE;
         this.IMG = IMG;
         this.SHOP_NAME = SHOP_NAME;
+        this.isSelected = false;
     }
 
     @Override
@@ -32,7 +35,9 @@ public class Offer {
         return "title = " + TITLE
                 + "\nper = " + PERCENTAGE
                 + "\nprice = " + PRICE
-                + "\nimg = " + IMG;
+                + "\nimg = " + IMG
+                + "\nshop = " + SHOP_NAME
+                + "\nisSelected = " + isSelected;
     }
 
     public String getTITLE() {
@@ -53,5 +58,13 @@ public class Offer {
 
     public String getSHOP_NAME() {
         return SHOP_NAME;
+    }
+
+    public boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 }

@@ -33,6 +33,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             }
             // TODO add previous price
             holder.offerShopName.setText(current.getSHOP_NAME());
+            holder.checkBox.setChecked(current.getIsSelected());
         } else {
             // Covers the case of data not being ready yet.
             holder.offerTitleItemView.setText(R.string.no_offer);
