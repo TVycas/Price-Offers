@@ -6,9 +6,34 @@
     tools:context="com.example.akcijos.UserChoicesFragment">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/user_cart"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="These are the top stories: "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginBottom="5dp"
+        android:background="@color/colorAccent"
+        android:paddingVertical="15dp"
+        android:text="Your Cart"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_cart"
+        android:layout_margin="10dp"
+        tools:listitem="@layout/recyclerview_item" />
+
+    <TextView
+        android:id="@+id/total_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        android:paddingVertical="7dp"
+        android:text="The total price of your selected items: "
+        android:textColor="#000000"
+        android:textStyle="bold" />
 
 </RelativeLayout>

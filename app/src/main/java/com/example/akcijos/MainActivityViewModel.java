@@ -12,11 +12,13 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private OffersRepository repo;
     private LiveData<List<Offer>> allOffers;
+    private LiveData<List<Offer>> selectedOffers;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         repo = new OffersRepository(application);
         allOffers = repo.getAllOffers();
+        selectedOffers = repo.getSelectedOffers();
     }
 
     public void updateOffer(Offer newOffer) {
@@ -30,5 +32,9 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<List<Offer>> getAllOffers() {
         return allOffers;
+    }
+
+    public LiveData<List<Offer>> getSelectedOffers() {
+        return selectedOffers;
     }
 }

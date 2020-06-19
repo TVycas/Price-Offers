@@ -13,18 +13,23 @@ public class OffersRepository {
     private WebScraper webScraper;
     private OfferDao offerDao;
     private LiveData<List<Offer>> allOffers;
+    private LiveData<List<Offer>> selectedOffers;
 
     public OffersRepository(Application application) {
         OfferRoomDatabase db = OfferRoomDatabase.getDatabase(application);
         offerDao = db.offerDao();
 
         allOffers = offerDao.getAllOffers();
-
+        selectedOffers = offerDao.getSelectedOffers();
         webScraper = new WebScraper(application, this);
     }
 
     LiveData<List<Offer>> getAllOffers() {
         return allOffers;
+    }
+
+    public LiveData<List<Offer>> getSelectedOffers() {
+        return selectedOffers;
     }
 
 

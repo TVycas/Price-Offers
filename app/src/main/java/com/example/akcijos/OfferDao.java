@@ -31,4 +31,6 @@ public interface OfferDao {
     @Update
     void update(Offer... offers);
 
+    @Query("SELECT * FROM offer_table WHERE isSelected = 1")
+    LiveData<List<Offer>> getSelectedOffers();
 }
