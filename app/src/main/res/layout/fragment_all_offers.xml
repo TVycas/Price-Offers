@@ -13,6 +13,13 @@
         android:background="@color/colorAccent"
         android:queryHint="Ieškoti prekės" />
 
+    <Button
+        android:id="@+id/scrape_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Scrape" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_below="@id/searchView"

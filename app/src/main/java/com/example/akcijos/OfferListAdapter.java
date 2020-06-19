@@ -1,9 +1,12 @@
 package com.example.akcijos;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +15,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHolder> {
+
+    private static CheckedChangeListener checkedListener;
+
+    @Override
+    public void onBindViewHolder(@NonNull OfferListAdapter.OfferViewHolder holder, int position) {
+        if (offers != null) {
+
+            Offer current = offers.get(position);
+            holder.offerTitleItemView.setText(current.getTITLE());
+
+            if (current.getPRICE() == -1) {
+                // TODO use placeholders
+                holder.offerPriceItemView.setText("-" + current.getPERCENTAGE() + "%");
+            } else {
+                holder.offerPriceItemView.setText(current.getPRICE() + "€");
+            }
+            // TODO add previous price
+            holder.offerShopName.setText(current.getSHOP_NAME());
+        } else {
+            // Covers the case of data not being ready yet.
+            holder.offerTitleItemView.setText(R.string.no_offer);
+        }
+    }
 
     final LayoutInflater inflater;
     private List<Offer> offers;
@@ -32,16 +58,8 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         return new OfferViewHolder(itemView);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull OfferListAdapter.OfferViewHolder holder, int position) {
-        if (offers != null) {
-            Offer current = offers.get(position);
-            holder.offerTitleItemView.setText(current.getTitle());
-            holder.offerPriceItemView.setText(String.valueOf(current.getPrice()));
-        } else {
-            // Covers the case of data not being ready yet.
-            holder.offerTitleItemView.setText(R.string.no_offer);
-        }
+    public Offer getOfferAtPosition(int position) {
+        return offers.get(position);
     }
 
     @Override
@@ -63,14 +81,42 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         return position;
     }
 
+    public void setOnCheckedChangedListener(CheckedChangeListener listener) {
+        OfferListAdapter.checkedListener = listener;
+    }
+
+    interface OnItemCheckListener {
+        void onItemCheck(ClipData.Item item);
+
+        void onItemUncheck(ClipData.Item item);
+    }
+
+    public interface CheckedChangeListener {
+        void onCheckedChanged(CompoundButton view, boolean isChecked, int position);
+    }
+
     static class OfferViewHolder extends RecyclerView.ViewHolder {
         private final TextView offerPriceItemView;
         private final TextView offerTitleItemView;
+        private final TextView offerShopName;
+        private final CheckBox checkBox;
 
         OfferViewHolder(@NonNull View itemView) {
             super(itemView);
             offerTitleItemView = itemView.findViewById(R.id.offer_title_textview);
             offerPriceItemView = itemView.findViewById(R.id.offer_price_textview);
+            offerShopName = itemView.findViewById(R.id.shop_name);
+            checkBox = itemView.findViewById(R.id.cart_checkbox);
+
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (checkedListener != null) {
+                        checkedListener.onCheckedChanged(buttonView, isChecked, getAdapterPosition());
+                    }
+                }
+            });
+
         }
     }
 }

@@ -1,9 +1,12 @@
 package com.example.akcijos;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +23,7 @@ import java.util.List;
  */
 public class AllOffersFragment extends Fragment {
 
+    private static final String TAG = AllOffersFragment.class.getName();
     private MainActivityViewModel viewModel;
 
     public AllOffersFragment() {
@@ -44,6 +48,18 @@ public class AllOffersFragment extends Fragment {
         recyclerView.setAdapter(offerListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        offerListAdapter.setOnCheckedChangedListener(new OfferListAdapter.CheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton view, boolean isChecked, int position) {
+                if (isChecked) {
+                    Offer offer = offerListAdapter.getOfferAtPosition(position);
+                    Log.d(TAG, "onCheckedChanged: " + offer);
+                }
+
+                // ViewModel.updateUserCart(offer)
+            }
+        });
+
         // Observe ViewModel
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(MainActivityViewModel.class);
         viewModel.getAllOffers().observe(this, new Observer<List<Offer>>() {
@@ -52,5 +68,17 @@ public class AllOffersFragment extends Fragment {
                 offerListAdapter.setOffers(offers);
             }
         });
+
+        Button scrapeButton = getView().findViewById(R.id.scrape_button);
+        scrapeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.initScraping();
+            }
+        });
+    }
+
+    public void simulateClick(View view) {
+        viewModel.initScraping();
     }
 }

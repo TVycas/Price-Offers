@@ -32,7 +32,7 @@ public class MaximaScraper {
             double price = getPrice(e);
             String img = getImageLink(e);
 
-            offers.add(new Offer(title, percentage, price, img));
+            offers.add(new Offer(title, percentage, price, img, "Maxima"));
         }
 
         return offers;
