@@ -53,6 +53,7 @@ public class AllOffersFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         offerListAdapter.setOnCheckedChangedListener(new OfferListAdapter.CheckedChangeListener() {
+            // Get the offer object that was selected by the user and update the database to store the new selection value
             @Override
             public void onCheckedChanged(CompoundButton view, boolean isChecked, int position) {
                 Offer offer = offerListAdapter.getOfferAtPosition(position);

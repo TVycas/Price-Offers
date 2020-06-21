@@ -35,7 +35,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
     @Override
     public void onBindViewHolder(@NonNull OfferListAdapter.OfferViewHolder holder, final int position) {
         if (offers != null) {
-
+            // Set up the data displayed in the viewHolder
             Offer current = offers.get(position);
             holder.offerTitleItemView.setText(current.getTITLE());
 
@@ -72,7 +72,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         return new OfferViewHolder(itemView);
     }
 
-    public Offer getOfferAtPosition(int position) {
+    Offer getOfferAtPosition(int position) {
         return offers.get(position);
     }
 
@@ -95,7 +95,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         return position;
     }
 
-    public void setOnCheckedChangedListener(CheckedChangeListener listener) {
+    void setOnCheckedChangedListener(CheckedChangeListener listener) {
         checkedListener = listener;
     }
 
@@ -103,7 +103,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         void onCheckedChanged(CompoundButton view, boolean isChecked, int position);
     }
 
-    class OfferViewHolder extends RecyclerView.ViewHolder {
+    static class OfferViewHolder extends RecyclerView.ViewHolder {
         private final TextView offerPriceItemView;
         private final TextView offerTitleItemView;
         private final TextView offerShopName;

@@ -52,6 +52,7 @@ public class UserCartFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         cartListAdapter.setOnCheckedChangedListener(new OfferListAdapter.CheckedChangeListener() {
+            // Get the offer object that was selected by the user and update the database to store the new selection value
             @Override
             public void onCheckedChanged(CompoundButton view, boolean isChecked, int position) {
                 Offer offer = cartListAdapter.getOfferAtPosition(position);
@@ -64,12 +65,9 @@ public class UserCartFragment extends Fragment {
         // Observe ViewModel
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(MainActivityViewModel.class);
         viewModel.getSelectedOffers().observe(this, new Observer<List<Offer>>() {
+            // Update the cart as soon as the database changes.
             @Override
             public void onChanged(List<Offer> offers) {
-                for (Offer o :
-                        offers) {
-                    Log.d(TAG, "onChanged: " + o);
-                }
                 cartListAdapter.setOffers(offers);
             }
         });

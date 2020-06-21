@@ -20,7 +20,7 @@ public class OffersRepository {
     private LiveData<List<Offer>> allOffers;
     private LiveData<List<Offer>> selectedOffers;
 
-    public OffersRepository(Application application) {
+    OffersRepository(Application application) {
         OfferRoomDatabase db = OfferRoomDatabase.getDatabase(application);
         offerDao = db.offerDao();
 
@@ -33,20 +33,20 @@ public class OffersRepository {
         return allOffers;
     }
 
-    public LiveData<List<Offer>> getSelectedOffers() {
+    LiveData<List<Offer>> getSelectedOffers() {
         return selectedOffers;
     }
 
-
-    public void startScraping() {
+    void startScraping() {
         webScraper.startScrapingMaxima();
     }
+
 
     public void insert(List<Offer> offers) {
         new insertAsyncTask(offerDao).execute(offers);
     }
 
-    public void update(Offer offer) {
+    void update(Offer offer) {
         new updateOfferAsyncTask(offerDao).execute(offer);
     }
 
@@ -59,7 +59,10 @@ public class OffersRepository {
 //        new deleteOfferAsyncTask(offerDao).execute(offer);
 //    }
 
-    private class insertAsyncTask extends AsyncTask<List<Offer>, Void, Void> {
+
+    // Do database operations asynchronously
+
+    private static class insertAsyncTask extends AsyncTask<List<Offer>, Void, Void> {
         private OfferDao asyncTaskDao;
 
         public insertAsyncTask(OfferDao offerDao) {
@@ -75,7 +78,7 @@ public class OffersRepository {
         }
     }
 
-    private class updateOfferAsyncTask extends AsyncTask<Offer, Void, Void> {
+    private static class updateOfferAsyncTask extends AsyncTask<Offer, Void, Void> {
         private OfferDao asyncTaskDao;
 
         public updateOfferAsyncTask(OfferDao offerDao) {
