@@ -47,7 +47,7 @@ public class AllOffersFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Set up the RecyclerView.
-        RecyclerView recyclerView = getView().findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = getView().findViewById(R.id.all_offers_recyclerview);
         final OfferListAdapter offerListAdapter = new OfferListAdapter(getContext());
         recyclerView.setAdapter(offerListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -56,11 +56,10 @@ public class AllOffersFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton view, boolean isChecked, int position) {
                 Offer offer = offerListAdapter.getOfferAtPosition(position);
-                if (offer.getIsSelected() != isChecked) {
-                    Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
-                    offer.setIsSelected(isChecked);
-                    viewModel.updateOffer(offer);
-                }
+                Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
+                offer.setIsSelected(isChecked);
+                viewModel.updateOffer(offer);
+
             }
         });
 

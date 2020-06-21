@@ -18,10 +18,19 @@ import java.util.List;
 
 class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHolder> {
 
-    private static CheckedChangeListener checkedListener;
-    final LayoutInflater inflater;
+    private final LayoutInflater inflater;
+    private CheckedChangeListener checkedListener;
     private List<Offer> offers;
 
+
+    OfferListAdapter(Context context) {
+        inflater = LayoutInflater.from(context);
+    }
+
+    void setOffers(List<Offer> offers) {
+        this.offers = offers;
+        notifyDataSetChanged();
+    }
 
     @Override
     public void onBindViewHolder(@NonNull OfferListAdapter.OfferViewHolder holder, final int position) {
@@ -56,15 +65,6 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         }
     }
 
-    OfferListAdapter(Context context) {
-        inflater = LayoutInflater.from(context);
-    }
-
-    void setOffers(List<Offer> offers) {
-        this.offers = offers;
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public OfferListAdapter.OfferViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -96,14 +96,14 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
     }
 
     public void setOnCheckedChangedListener(CheckedChangeListener listener) {
-        OfferListAdapter.checkedListener = listener;
+        checkedListener = listener;
     }
 
     public interface CheckedChangeListener {
         void onCheckedChanged(CompoundButton view, boolean isChecked, int position);
     }
 
-    static class OfferViewHolder extends RecyclerView.ViewHolder {
+    class OfferViewHolder extends RecyclerView.ViewHolder {
         private final TextView offerPriceItemView;
         private final TextView offerTitleItemView;
         private final TextView offerShopName;

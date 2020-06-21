@@ -20,7 +20,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new AllOffersFragment();
             case 1:
-                return new UserChoicesFragment();
+                return new UserCartFragment();
             default:
                 return null;
         }

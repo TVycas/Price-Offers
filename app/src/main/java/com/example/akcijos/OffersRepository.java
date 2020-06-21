@@ -2,7 +2,6 @@ package com.example.akcijos;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -85,8 +84,7 @@ public class OffersRepository {
 
         @Override
         protected Void doInBackground(Offer... offers) {
-            int rowsUpdated = asyncTaskDao.update(offers[0]);
-            Log.d(TAG, "doInBackground: Rows updated = " + rowsUpdated);
+            asyncTaskDao.update(offers[0]);
             return null;
         }
     }

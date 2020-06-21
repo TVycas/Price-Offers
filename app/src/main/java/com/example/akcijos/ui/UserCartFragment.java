@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,12 +24,12 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserChoicesFragment extends Fragment {
+public class UserCartFragment extends Fragment {
 
-    private static final String TAG = UserChoicesFragment.class.getName();
+    private static final String TAG = UserCartFragment.class.getName();
     private MainActivityViewModel viewModel;
 
-    public UserChoicesFragment() {
+    public UserCartFragment() {
         // Required empty public constructor
     }
 
@@ -37,7 +38,7 @@ public class UserChoicesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_choices, container, false);
+        return inflater.inflate(R.layout.fragment_user_cart, container, false);
     }
 
     @Override
@@ -45,10 +46,20 @@ public class UserChoicesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Set up the RecyclerView.
-        RecyclerView recyclerView = getView().findViewById(R.id.recyclerview);
-        final OfferListAdapter offerListAdapter = new OfferListAdapter(getContext());
-        recyclerView.setAdapter(offerListAdapter);
+        RecyclerView recyclerView = getView().findViewById(R.id.user_cart_recyclerview);
+        final OfferListAdapter cartListAdapter = new OfferListAdapter(getContext());
+        recyclerView.setAdapter(cartListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        cartListAdapter.setOnCheckedChangedListener(new OfferListAdapter.CheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton view, boolean isChecked, int position) {
+                Offer offer = cartListAdapter.getOfferAtPosition(position);
+                Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
+                offer.setIsSelected(isChecked);
+                viewModel.updateOffer(offer);
+            }
+        });
 
         // Observe ViewModel
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(MainActivityViewModel.class);
@@ -59,7 +70,7 @@ public class UserChoicesFragment extends Fragment {
                         offers) {
                     Log.d(TAG, "onChanged: " + o);
                 }
-                offerListAdapter.setOffers(offers);
+                cartListAdapter.setOffers(offers);
             }
         });
     }
