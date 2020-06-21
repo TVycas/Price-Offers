@@ -29,7 +29,7 @@ public interface OfferDao {
     LiveData<List<Offer>> getAllOffers();
 
     @Update
-    int update(Offer... offers);
+    void update(Offer... offers);
 
     @Query("SELECT * FROM offer_table WHERE isSelected = 1")
     LiveData<List<Offer>> getSelectedOffers();

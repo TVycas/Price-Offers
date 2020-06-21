@@ -68,7 +68,7 @@ public class UserCartFragment extends Fragment {
             // Update the cart as soon as the database changes.
             @Override
             public void onChanged(List<Offer> offers) {
-                cartListAdapter.setOffers(offers);
+                cartListAdapter.setDisplayedOffers(offers);
             }
         });
     }

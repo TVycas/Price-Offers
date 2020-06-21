@@ -5,8 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -69,16 +69,23 @@ public class AllOffersFragment extends Fragment {
         viewModel.getAllOffers().observe(this, new Observer<List<Offer>>() {
             @Override
             public void onChanged(List<Offer> offers) {
-                offerListAdapter.setOffers(offers);
+                offerListAdapter.setDisplayedOffers(offers);
             }
         });
 
-        Button scrapeButton = getView().findViewById(R.id.scrape_button);
-        scrapeButton.setOnClickListener(new View.OnClickListener() {
+        SearchView searchView = getView().findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
-                viewModel.initScraping();
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                offerListAdapter.getFilter().filter(newText);
+                return false;
             }
         });
+
     }
 }

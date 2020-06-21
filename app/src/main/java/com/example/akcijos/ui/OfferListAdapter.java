@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,29 +16,71 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.akcijos.R;
 import com.example.akcijos.database.Offer;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHolder> {
+class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHolder> implements Filterable {
 
     private final LayoutInflater inflater;
     private CheckedChangeListener checkedListener;
-    private List<Offer> offers;
-
+    private List<Offer> displayedOffers;
+    private List<Offer> allOffers;
 
     OfferListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
     }
 
-    void setOffers(List<Offer> offers) {
-        this.offers = offers;
+    private Filter offersFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Offer> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(allOffers);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                // Filter the list of all offers to see if the pattern is in any of the offers
+                for (Offer offer : allOffers) {
+                    if (offer.getTITLE().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(offer);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            displayedOffers.clear();
+            displayedOffers.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    void setDisplayedOffers(List<Offer> offers) {
+        // Make lists for storing and displaying the offers
+        displayedOffers = offers;
+        allOffers = new ArrayList<>(offers);
+
         notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public OfferListAdapter.OfferViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = inflater.inflate(R.layout.recyclerview_item, parent, false);
+        return new OfferViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull OfferListAdapter.OfferViewHolder holder, final int position) {
-        if (offers != null) {
+        if (displayedOffers != null) {
             // Set up the data displayed in the viewHolder
-            Offer current = offers.get(position);
+            Offer current = displayedOffers.get(position);
             holder.offerTitleItemView.setText(current.getTITLE());
 
             if (current.getPRICE() == -1) {
@@ -65,24 +109,8 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         }
     }
 
-    @NonNull
-    @Override
-    public OfferListAdapter.OfferViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = inflater.inflate(R.layout.recyclerview_item, parent, false);
-        return new OfferViewHolder(itemView);
-    }
-
     Offer getOfferAtPosition(int position) {
-        return offers.get(position);
-    }
-
-    @Override
-    public int getItemCount() {
-        if (offers != null) {
-            return offers.size();
-        } else {
-            return 0;
-        }
+        return displayedOffers.get(position);
     }
 
     @Override
@@ -99,11 +127,28 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         checkedListener = listener;
     }
 
+    @Override
+    public int getItemCount() {
+        if (displayedOffers != null) {
+            return displayedOffers.size();
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return offersFilter;
+    }
+
     public interface CheckedChangeListener {
+
         void onCheckedChanged(CompoundButton view, boolean isChecked, int position);
+
     }
 
     static class OfferViewHolder extends RecyclerView.ViewHolder {
+
         private final TextView offerPriceItemView;
         private final TextView offerTitleItemView;
         private final TextView offerShopName;

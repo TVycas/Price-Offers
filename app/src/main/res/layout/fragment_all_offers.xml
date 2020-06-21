@@ -6,7 +6,7 @@
     tools:context="com.example.akcijos.ui.AllOffersFragment">
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -14,16 +14,9 @@
         android:iconifiedByDefault="false"
         android:queryHint="Ieškoti prekės" />
 
-    <Button
-        android:id="@+id/scrape_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="Scrape" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/all_offers_recyclerview"
-        android:layout_below="@id/searchView"
+        android:layout_below="@id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
