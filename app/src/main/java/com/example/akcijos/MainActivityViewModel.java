@@ -30,8 +30,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         repo.update(newOffer);
     }
 
-    public void scrapeOffers() {
-        repo.startScraping();
+    public void refreshDatabase() {
+        repo.refreshDatabase();
     }
 
     public LiveData<List<Offer>> getAllOffers() {

@@ -32,10 +32,6 @@ public class OffersRepository {
         return selectedOffers;
     }
 
-    void startScraping() {
-        webScraper.startScraping();
-    }
-
     public LiveData<List<Offer>> filterOffers(int filterSelection) {
         switch (filterSelection) {
             case 0:
@@ -66,14 +62,19 @@ public class OffersRepository {
         new updateOfferAsyncTask(offerDao).execute(offer);
     }
 
-//    public void deleteAll()  {
-//        new deleteAllOffersAsyncTask(offerDao).execute();
-//    }
+    void refreshDatabase() {
+        deleteAllAndStartScraping();
+    }
 
-    // Must run off main thread
-//    public void deleteWord(Offer offer) {
-//        new deleteOfferAsyncTask(offerDao).execute(offer);
-//    }
+    private void deleteAllAndStartScraping() {
+        new deleteAllOffersAndScrapeAsyncTask(offerDao, new TaskDelegate() {
+            @Override
+            public void taskCompleted() {
+                // Start scraping after the database is deleted
+                webScraper.startScraping();
+            }
+        }).execute();
+    }
 
 
     // Do database operations asynchronously
@@ -93,10 +94,15 @@ public class OffersRepository {
         }
     }
 
+    // A delegate interface for notifying the main thread that the async tasks are completed
+    public interface TaskDelegate {
+        void taskCompleted();
+    }
+
     private static class updateOfferAsyncTask extends AsyncTask<Offer, Void, Void> {
         private OfferDao asyncTaskDao;
 
-        public updateOfferAsyncTask(OfferDao offerDao) {
+        updateOfferAsyncTask(OfferDao offerDao) {
             asyncTaskDao = offerDao;
         }
 
@@ -104,6 +110,29 @@ public class OffersRepository {
         protected Void doInBackground(Offer... offers) {
             asyncTaskDao.update(offers[0]);
             return null;
+        }
+    }
+
+    private static class deleteAllOffersAndScrapeAsyncTask extends AsyncTask<Void, Void, Void> {
+        private OfferDao asyncTaskDao;
+        private TaskDelegate delegate;
+
+        deleteAllOffersAndScrapeAsyncTask(OfferDao offerDao, TaskDelegate delegate) {
+            this.delegate = delegate;
+            asyncTaskDao = offerDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            asyncTaskDao.deleteAll();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            // Notify the repository that the database is empty
+            delegate.taskCompleted();
+            super.onPostExecute(aVoid);
         }
     }
 }

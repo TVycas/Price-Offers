@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.refresh_offers:
                 // User chose the "Refresh Offers" item, running the scraping
-                viewModel.scrapeOffers();
+                viewModel.refreshDatabase();
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
