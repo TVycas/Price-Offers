@@ -34,6 +34,12 @@ public interface OfferDao {
     @Query("SELECT * FROM offer_table ORDER BY PERCENTAGE ASC")
     LiveData<List<Offer>> getAllOffersByDiscountLowToHigh();
 
+    @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Iki'")
+    LiveData<List<Offer>> getAllIkiOffers();
+
+    @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Maxima'")
+    LiveData<List<Offer>> getAllMaximaOffers();
+
     @Update
     void update(Offer... offers);
 

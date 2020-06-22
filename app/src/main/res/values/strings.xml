@@ -12,9 +12,11 @@
     <string name="look_for_offer">Ieškoti prekės</string>
 
     <string-array name="filter_names">
-        <item>Alphabetiskai</item>
-        <item>Akcijos didėjančia</item>
-        <item>Akcijos mažėjančia</item>
+        <item>A - Ž</item>
+        <item>Akcijos ↑</item>
+        <item>Akcijos ↓</item>
+        <item>Tik Iki</item>
+        <item>Tik Maxima</item>
     </string-array>
 
 </resources>

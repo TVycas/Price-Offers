@@ -47,6 +47,12 @@ public class OffersRepository {
             case 2:
                 Log.d(TAG, "filterOffers: ByDiscountLowToHigh, id = " + filterSelection);
                 return offerDao.getAllOffersByDiscountLowToHigh();
+            case 3:
+                Log.d(TAG, "filterOffers: IkiOffers, id = " + filterSelection);
+                return offerDao.getAllIkiOffers();
+            case 4:
+                Log.d(TAG, "filterOffers: MaximaOffers, id = " + filterSelection);
+                return offerDao.getAllMaximaOffers();
             default:
                 return offerDao.getAllOffersAlphabetic();
         }
