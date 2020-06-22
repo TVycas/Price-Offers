@@ -9,4 +9,12 @@
     <string name="add_to_cart">Add to cart</string>
     <string name="shop_name">Shop name</string>
     <string name="refresh_offers">Refresh Offers</string>
+    <string name="look_for_offer">Ieškoti prekės</string>
+
+    <string-array name="filter_names">
+        <item>Alphabetiskai</item>
+        <item>Akcijos didėjančia</item>
+        <item>Akcijos mažėjančia</item>
+    </string-array>
+
 </resources>

@@ -5,8 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,10 +28,11 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AllOffersFragment extends Fragment {
+public class AllOffersFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = AllOffersFragment.class.getName();
     private MainActivityViewModel viewModel;
+    private String queryText = "";
 
     public AllOffersFragment() {
         // Required empty public constructor
@@ -69,10 +73,17 @@ public class AllOffersFragment extends Fragment {
         viewModel.getAllOffers().observe(this, new Observer<List<Offer>>() {
             @Override
             public void onChanged(List<Offer> offers) {
-                offerListAdapter.setDisplayedOffers(offers);
+                if (!queryText.equals("")) {
+                    // Don't update the dataSetChanged because it will update after filtering
+                    offerListAdapter.setDisplayedOffers(offers, false);
+                    offerListAdapter.getFilter().filter(queryText);
+                } else {
+                    offerListAdapter.setDisplayedOffers(offers, true);
+                }
             }
         });
 
+        // Set up the search view to search offers
         SearchView searchView = getView().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -82,10 +93,26 @@ public class AllOffersFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                queryText = newText;
                 offerListAdapter.getFilter().filter(newText);
                 return false;
             }
         });
 
+        // Set up spinner for filtering the offers
+        Spinner filtersSpinner = getView().findViewById(R.id.filters_spinner);
+        ArrayAdapter<CharSequence> filterSpinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.filter_names, android.R.layout.simple_spinner_item);
+        filterSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filtersSpinner.setAdapter(filterSpinnerAdapter);
+        filtersSpinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        viewModel.filterOffers(position);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 }

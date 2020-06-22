@@ -61,12 +61,16 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         }
     };
 
-    void setDisplayedOffers(List<Offer> offers) {
-        // Make lists for storing and displaying the offers
-        displayedOffers = offers;
-        allOffers = new ArrayList<>(offers);
+    void setDisplayedOffers(List<Offer> offers, boolean shouldUpdateDataSetChanged) {
+        if (offers != null) {
+            // Make lists for storing and displaying the offers
+            displayedOffers = offers;
+            allOffers = new ArrayList<>(offers);
 
-        notifyDataSetChanged();
+            if (shouldUpdateDataSetChanged) {
+                notifyDataSetChanged();
+            }
+        }
     }
 
     @NonNull

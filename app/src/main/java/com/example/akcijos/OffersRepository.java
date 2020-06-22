@@ -2,6 +2,7 @@ package com.example.akcijos;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -24,7 +25,6 @@ public class OffersRepository {
         OfferRoomDatabase db = OfferRoomDatabase.getDatabase(application);
         offerDao = db.offerDao();
 
-        allOffers = offerDao.getAllOffers();
         selectedOffers = offerDao.getSelectedOffers();
         webScraper = new WebScraper(application, this);
     }
@@ -50,6 +50,22 @@ public class OffersRepository {
         new updateOfferAsyncTask(offerDao).execute(offer);
     }
 
+    public LiveData<List<Offer>> filterOffers(int filterSelection) {
+        switch (filterSelection) {
+            case 0:
+                Log.d(TAG, "filterOffers: Alphabetic, id = " + filterSelection);
+                return offerDao.getAllOffersAlphabetic();
+            case 1:
+                Log.d(TAG, "filterOffers: ByDiscountHighToLow, id = " + filterSelection);
+                return offerDao.getAllOffersByDiscountHighToLow();
+            case 2:
+                Log.d(TAG, "filterOffers: ByDiscountLowToHigh, id = " + filterSelection);
+                return offerDao.getAllOffersByDiscountLowToHigh();
+            default:
+                return offerDao.getAllOffersAlphabetic();
+        }
+    }
+
 //    public void deleteAll()  {
 //        new deleteAllOffersAsyncTask(offerDao).execute();
 //    }
@@ -61,7 +77,6 @@ public class OffersRepository {
 
 
     // Do database operations asynchronously
-
     private static class insertAsyncTask extends AsyncTask<List<Offer>, Void, Void> {
         private OfferDao asyncTaskDao;
 

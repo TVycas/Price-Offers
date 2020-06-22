@@ -5,18 +5,32 @@
     android:layout_height="match_parent"
     tools:context="com.example.akcijos.ui.AllOffersFragment">
 
-    <SearchView
-        android:id="@+id/search_view"
+    <LinearLayout
+        android:id="@+id/top_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:background="@color/colorAccent"
-        android:iconifiedByDefault="false"
-        android:queryHint="Ieškoti prekės" />
+        android:orientation="horizontal">
+
+        <SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:layout_weight="5"
+            android:queryHint="@string/look_for_offer" />
+
+        <Spinner
+            android:id="@+id/filters_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/all_offers_recyclerview"
-        android:layout_below="@id/search_view"
+        android:layout_below="@id/top_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

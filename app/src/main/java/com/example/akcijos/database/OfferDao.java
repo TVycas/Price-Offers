@@ -26,7 +26,13 @@ public interface OfferDao {
     Offer[] getAnyWord();
 
     @Query("SELECT * FROM offer_table ORDER BY title ASC")
-    LiveData<List<Offer>> getAllOffers();
+    LiveData<List<Offer>> getAllOffersAlphabetic();
+
+    @Query("SELECT * FROM offer_table ORDER BY PERCENTAGE DESC")
+    LiveData<List<Offer>> getAllOffersByDiscountHighToLow();
+
+    @Query("SELECT * FROM offer_table ORDER BY PERCENTAGE ASC")
+    LiveData<List<Offer>> getAllOffersByDiscountLowToHigh();
 
     @Update
     void update(Offer... offers);
