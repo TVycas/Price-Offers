@@ -88,12 +88,13 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             holder.offerTitleItemView.setText(current.getTITLE());
 
             if (current.getPRICE() == -1) {
-                // TODO use placeholders
-                holder.offerPriceItemView.setText("-" + current.getPERCENTAGE() + "%");
+                holder.offerPriceItemView.setText(holder.itemView.getContext().getString(R.string.percentage, current.getPERCENTAGE()));
+            } else if (current.getPERCENTAGE() != -1) {
+                holder.offerPriceItemView.setText(holder.itemView.getContext().getString(R.string.price_and_percentage, current.getPRICE(), current.getPERCENTAGE()));
             } else {
-                holder.offerPriceItemView.setText(current.getPRICE() + "€");
+                holder.offerPriceItemView.setText(holder.itemView.getContext().getString(R.string.price, current.getPRICE()));
             }
-            // TODO add previous price
+
             holder.offerShopName.setText(current.getSHOP_NAME());
 
             // Remove the old listener and replace with new one
