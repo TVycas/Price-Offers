@@ -11,7 +11,7 @@
     <string name="refresh_offers">Refresh Offers</string>
     <string name="look_for_offer">Ieškoti prekės</string>
 
-    <string name="percentage">-%1$d\%%</string>
+    <string name="percentage">-%1$d%%</string>
     <string name="price_and_percentage">%1$.2f€ (-%2$d%%)</string>
     <string name="price">%1$.2f€</string>
 

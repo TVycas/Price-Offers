@@ -45,7 +45,6 @@ public class WebScraper {
                     return new WebResourceResponse("text/javascript", "UTF-8", null);
                 }
 
-                Log.i(TAG, "shouldInterceptRequest: requested for " + uri);
                 return super.shouldInterceptRequest(view, request);
             }
 
@@ -97,6 +96,8 @@ public class WebScraper {
 
         wv.setWebViewClient(new WebViewClient() {
             int timesLoaded = 0;
+            int loadsToMake = 5;
+            boolean calculateLoadsToMake = true;
 
             @Nullable
             @Override
@@ -105,14 +106,28 @@ public class WebScraper {
                 if (uri.contains("css") || uri.contains("ico") || uri.contains("facebook") || uri.contains("google")) {
                     return new WebResourceResponse("text/javascript", "UTF-8", null);
                 }
-                Log.i(TAG, "shouldInterceptRequest: requested for " + uri);
                 return super.shouldInterceptRequest(view, request);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                // TODO timesLoaded needs to be set programmatically
-                if (timesLoaded < 5) {
+                // Calculate how many button clicks is needed to load the entire offers page for Maxima
+                if (calculateLoadsToMake) {
+                    wv.evaluateJavascript("javascript:document.getElementById('items_cnt').textContent;", new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String value) {
+                            value = value.replace("\"", "");
+                            int itemsToLoad = Integer.parseInt(value);
+
+                            // 45 is the number of offers loaded in a single step (button click)
+                            loadsToMake = (itemsToLoad / 45) + 1;
+                            calculateLoadsToMake = false;
+                            Log.d(TAG, "onReceiveValue: loads to make for Maxima" + loadsToMake);
+                        }
+                    });
+                }
+
+                if (timesLoaded < loadsToMake) {
                     wv.evaluateJavascript("javascript:document.getElementsByClassName('btn grey')[0].click();",
                             new ValueCallback<String>() {
                                 @Override
