@@ -73,6 +73,10 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
         viewModel.getAllOffers().observe(this, new Observer<List<Offer>>() {
             @Override
             public void onChanged(List<Offer> offers) {
+                if (offers.size() != 0) {
+                    getActivity().findViewById(R.id.progress_circular).setVisibility(View.GONE);
+                }
+
                 if (!queryText.equals("")) {
                     // Don't update the dataSetChanged because it will update after filtering
                     offerListAdapter.setDisplayedOffers(offers, false);

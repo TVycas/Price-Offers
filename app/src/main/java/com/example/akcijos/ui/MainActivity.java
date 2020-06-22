@@ -3,6 +3,7 @@ package com.example.akcijos.ui;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -63,16 +64,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.refresh_offers:
-                // User chose the "Refresh Offers" item, running the scraping
-                viewModel.refreshDatabase();
-                return true;
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.refresh_offers) {// User chose the "Refresh Offers" item, running the scraping
+            viewModel.refreshDatabase();
+
+            findViewById(R.id.progress_circular).setVisibility(View.VISIBLE);
+            return true;
         }
+        // If we got here, the user's action was not recognized.
+        // Invoke the superclass to handle it.
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
