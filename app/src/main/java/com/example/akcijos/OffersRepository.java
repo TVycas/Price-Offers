@@ -18,7 +18,6 @@ public class OffersRepository {
     private static final String TAG = OffersRepository.class.getName();
     private WebScraper webScraper;
     private OfferDao offerDao;
-    private LiveData<List<Offer>> allOffers;
     private LiveData<List<Offer>> selectedOffers;
 
     OffersRepository(Application application) {
@@ -29,25 +28,12 @@ public class OffersRepository {
         webScraper = new WebScraper(application, this);
     }
 
-    LiveData<List<Offer>> getAllOffers() {
-        return allOffers;
-    }
-
     LiveData<List<Offer>> getSelectedOffers() {
         return selectedOffers;
     }
 
     void startScraping() {
-        webScraper.startScrapingMaxima();
-    }
-
-
-    public void insert(List<Offer> offers) {
-        new insertAsyncTask(offerDao).execute(offers);
-    }
-
-    void update(Offer offer) {
-        new updateOfferAsyncTask(offerDao).execute(offer);
+        webScraper.startScraping();
     }
 
     public LiveData<List<Offer>> filterOffers(int filterSelection) {
@@ -64,6 +50,14 @@ public class OffersRepository {
             default:
                 return offerDao.getAllOffersAlphabetic();
         }
+    }
+
+    public void insert(List<Offer> offers) {
+        new insertAsyncTask(offerDao).execute(offers);
+    }
+
+    void update(Offer offer) {
+        new updateOfferAsyncTask(offerDao).execute(offer);
     }
 
 //    public void deleteAll()  {

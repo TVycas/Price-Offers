@@ -21,17 +21,17 @@ public class MaximaScraper {
         this.html = html;
     }
 
-    //tures buti asynctask
     public ArrayList<Offer> scrapeOffers() {
-        Log.d(TAG, "Scraping started");
+        Log.d(TAG, "Maxima scraping started");
         Document doc = Jsoup.parse(html);
+
         Elements elems = doc.getElementsByClass("col-third");
         offers = new ArrayList<>();
 
         for (Element e : elems) {
             String title = e.getElementsByClass("title").text();
-            int percentage = getPercentage(e);
             double price = getPrice(e);
+            int percentage = getPercentage(e);
             String img = getImageLink(e);
 
             offers.add(new Offer(title, percentage, price, img, "Maxima"));
@@ -44,7 +44,7 @@ public class MaximaScraper {
         String img = "";
         String imgHtml = e.getElementsByClass("img").get(0).html();
         if (imgHtml.contains("src=")) {
-            img = imgHtml.substring(imgHtml.indexOf("src=") + 5, imgHtml.length() - 2);
+            img = "https://www.maxima.lt" + imgHtml.substring(imgHtml.indexOf("src=") + 5, imgHtml.length() - 2);
         }
         return img;
     }

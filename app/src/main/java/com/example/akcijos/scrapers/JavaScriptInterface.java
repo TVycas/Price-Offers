@@ -10,16 +10,26 @@ import java.util.ArrayList;
 public class JavaScriptInterface {
 
     private static final String TAG = JavaScriptInterface.class.getName();
-    private ArrayList<Offer> offers = new ArrayList<>();
+    private ArrayList<Offer> maximaOffers = new ArrayList<>();
+    private ArrayList<Offer> ikiOffers = new ArrayList<>();
 
     @JavascriptInterface
     public void scrapeMaximaHTML(String html) {
         MaximaScraper sc = new MaximaScraper(html);
-        offers = sc.scrapeOffers();
+        maximaOffers = sc.scrapeOffers();
     }
 
-    ArrayList<Offer> getOffers() {
-        return offers;
+    @JavascriptInterface
+    public void scrapeIkiHTML(String html) {
+        IkiScraper sc = new IkiScraper(html);
+        ikiOffers = sc.scrapeOffers();
     }
 
+    ArrayList<Offer> getMaximaOffers() {
+        return maximaOffers;
+    }
+
+    public ArrayList<Offer> getIkiOffers() {
+        return ikiOffers;
+    }
 }

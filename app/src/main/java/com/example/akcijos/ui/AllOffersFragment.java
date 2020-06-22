@@ -93,6 +93,7 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                // Store the query text to redo search if data filter changes
                 queryText = newText;
                 offerListAdapter.getFilter().filter(newText);
                 return false;
