@@ -23,4 +23,8 @@
         <item>Tik Maxima</item>
     </string-array>
 
+    <string name="iki_weekly_url">https://iki.lt/akcija_tag/tag_sia-savaite/?ipage=9&amp;itag=&amp;per_page=1000</string>
+    <string name="iki_monthly_url"><![CDATA[https://iki.lt/akcija_tag/tag_menesio-akcija/?ipage=48&itag=&per_page=1000]]></string>
+    <string name="maxima_url">https://www.maxima.lt/akcijos</string>
+
 </resources>

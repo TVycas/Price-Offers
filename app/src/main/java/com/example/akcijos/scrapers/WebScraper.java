@@ -12,6 +12,7 @@ import android.webkit.WebViewClient;
 import androidx.annotation.Nullable;
 
 import com.example.akcijos.OffersRepository;
+import com.example.akcijos.R;
 import com.example.akcijos.database.Offer;
 
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ import java.util.ArrayList;
 public class WebScraper {
 
     private static final String TAG = WebScraper.class.getName();
+    private final String MAXIMA_URL;
+    private final String IKI_MONTHLY_URL;
+    private final String IKI_WEEKLY_URL;
     private final Application application;
     private final OffersRepository repo;
     private JavaScriptInterface javaScriptInterface = new JavaScriptInterface();
@@ -30,6 +34,11 @@ public class WebScraper {
     public WebScraper(Application application, OffersRepository repo) {
         this.application = application;
         this.repo = repo;
+
+        // Read url constants
+        this.IKI_WEEKLY_URL = application.getString(R.string.iki_weekly_url);
+        this.IKI_MONTHLY_URL = application.getString(R.string.iki_monthly_url);
+        this.MAXIMA_URL = application.getString(R.string.maxima_url);
     }
 
     private void startScrapingIki(String url) {
@@ -155,7 +164,7 @@ public class WebScraper {
         });
 
         Log.d(TAG, "Maxima scraping starting");
-        wv.loadUrl("https://www.maxima.lt/akcijos");
+        wv.loadUrl(MAXIMA_URL);
 
     }
 
@@ -177,8 +186,8 @@ public class WebScraper {
     }
 
     public void startScraping() {
-        startScrapingIki("https://iki.lt/akcija_tag/tag_sia-savaite/?ipage=9?ipage=9&itag=&per_page=1000");
-        startScrapingIki("https://iki.lt/akcija_tag/tag_menesio-akcija/?ipage=48&itag=&per_page=1000");
+        startScrapingIki(IKI_WEEKLY_URL);
+        startScrapingIki(IKI_MONTHLY_URL);
         startScrapingMaxima();
     }
 }
