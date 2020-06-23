@@ -27,4 +27,8 @@
     <string name="iki_monthly_url"><![CDATA[https://iki.lt/akcija_tag/tag_menesio-akcija/?ipage=48&itag=&per_page=1000]]></string>
     <string name="maxima_url">https://www.maxima.lt/akcijos</string>
 
+    <string name="last_time_refreshed">Last refreshed %1$d days ago</string>
+    <string name="default_refresh_date">Offers have never been refreshed</string>
+    <string name="saved_last_refresh_date_key">1</string>
+
 </resources>
