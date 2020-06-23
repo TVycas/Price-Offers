@@ -69,8 +69,8 @@ public class MaximaScraper {
 
         if (priceElems.size() != 0) {
             try {
-                int firstHalf = Integer.parseInt(priceElems.get(0).getElementsByClass("value").text());
-                int secondHalf = Integer.parseInt(priceElems.get(0).getElementsByClass("cents").text());
+                String firstHalf = priceElems.get(0).getElementsByClass("value").text();
+                String secondHalf = priceElems.get(0).getElementsByClass("cents").text();
                 price = Double.parseDouble(firstHalf + "." + secondHalf);
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();

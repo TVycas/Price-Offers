@@ -90,9 +90,7 @@ public class IkiScraper {
         if (priceCents.size() != 0) {
             Elements priceMain = e.getElementsByClass("price-main");
             try {
-                int firstHalf = Integer.parseInt(priceMain.get(0).text());
-                int secondHalf = Integer.parseInt(priceCents.get(0).text());
-                price = Double.parseDouble(firstHalf + "." + secondHalf);
+                price = Double.parseDouble(priceMain.get(0).text() + "." + priceCents.get(0).text());
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();
             }
