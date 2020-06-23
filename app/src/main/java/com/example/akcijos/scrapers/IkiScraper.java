@@ -1,7 +1,9 @@
 package com.example.akcijos.scrapers;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.akcijos.OffersRepository;
 import com.example.akcijos.database.Offer;
 
 import org.jsoup.Jsoup;
@@ -9,34 +11,53 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class IkiScraper {
-
+public class IkiScraper extends AsyncTask<String, Void, List<Offer>> {
     private static final String TAG = IkiScraper.class.getName();
-    private final String html;
-    private ArrayList<Offer> offers;
 
-    public IkiScraper(String html) {
-        this.html = html;
+    private ArrayList<Offer> offers;
+    private OffersRepository.TaskDelegate delegate;
+
+    public IkiScraper(OffersRepository.TaskDelegate delegate) {
+        this.delegate = delegate;
     }
 
-    ArrayList<Offer> scrapeOffers() {
+    @Override
+    protected List<Offer> doInBackground(String... strings) {
         Log.d(TAG, "Iki scraping started");
 
-        Document doc = Jsoup.parse(html);
-        Elements elems = doc.getElementsByClass("akcija__anchor akcija-inner");
-        offers = new ArrayList<>();
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(strings[0]).get();
 
-        for (Element e : elems) {
-            String title = e.getElementsByClass("akcija__title").text();
-            double price = getPrice(e);
-            int percentage = getPercentage(e, price);
-            String img = getImageLink(e);
-            offers.add(new Offer(title, percentage, price, img, "Iki"));
+            Elements elems = doc.getElementsByClass("akcija__anchor akcija-inner");
+            offers = new ArrayList<>();
+
+            for (Element e : elems) {
+                String title = e.getElementsByClass("akcija__title").text();
+                double price = getPrice(e);
+                int percentage = getPercentage(e, price);
+                String img = getImageLink(e);
+                offers.add(new Offer(title, percentage, price, img, "Iki"));
+            }
+
+        } catch (IOException e) {
+            Log.e(TAG, "doInBackground: Iki offers scraping failed");
+            e.printStackTrace();
         }
 
+        Log.d(TAG, "doInBackground: Iki scraping finished");
+
         return offers;
+    }
+
+    @Override
+    protected void onPostExecute(List<Offer> offers) {
+        delegate.taskCompleted(offers);
+        super.onPostExecute(offers);
     }
 
     private String getImageLink(Element e) {

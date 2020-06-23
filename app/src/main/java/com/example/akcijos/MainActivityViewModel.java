@@ -15,10 +15,10 @@ import java.util.List;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
+    private static final String TAG = MainActivityViewModel.class.getName();
     private OffersRepository repo;
     private LiveData<List<Offer>> selectedOffers;
     private MutableLiveData<Integer> filterID = new MutableLiveData<>(0);
-//    private LiveData<List<Offer>> allOffers;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);

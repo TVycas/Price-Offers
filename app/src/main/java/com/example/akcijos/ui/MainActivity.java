@@ -60,19 +60,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
+        refreshDatabase();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.refresh_offers) {// User chose the "Refresh Offers" item, running the scraping
-            viewModel.refreshDatabase();
-
-            findViewById(R.id.progress_circular).setVisibility(View.VISIBLE);
+            refreshDatabase();
             return true;
         }
         // If we got here, the user's action was not recognized.
         // Invoke the superclass to handle it.
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refreshDatabase() {
+        viewModel.refreshDatabase();
+        findViewById(R.id.progress_circular).setVisibility(View.VISIBLE);
     }
 
     @Override

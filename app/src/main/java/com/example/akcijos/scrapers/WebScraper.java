@@ -16,6 +16,7 @@ import com.example.akcijos.R;
 import com.example.akcijos.database.Offer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WebScraper {
 
@@ -39,48 +40,6 @@ public class WebScraper {
         this.IKI_WEEKLY_URL = application.getString(R.string.iki_weekly_url);
         this.IKI_MONTHLY_URL = application.getString(R.string.iki_monthly_url);
         this.MAXIMA_URL = application.getString(R.string.maxima_url);
-    }
-
-    private void startScrapingIki(String url) {
-        final WebView wv = getWebView();
-        ikiScrapeFinished = false;
-
-        wv.setWebViewClient(new WebViewClient() {
-            @Nullable
-            @Override
-            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-                String uri = request.getUrl().toString();
-                // We only need the html for the offer scraping
-                if (!uri.endsWith("page=1000")) {
-                    return new WebResourceResponse("text/javascript", "UTF-8", null);
-                }
-                return super.shouldInterceptRequest(view, request);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                wv.evaluateJavascript("javascript:window.ANDROID.scrapeIkiHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');",
-                        new ValueCallback<String>() {
-                            @Override
-                            public void onReceiveValue(String value) {
-                                Log.d(TAG, "Iki scraping finished");
-                                // Scraping finished so we can insert the offers to the database.
-                                // No race conditions can happen because this code is executed on the main thread
-                                offers.addAll(javaScriptInterface.getIkiOffers());
-
-                                // Check if we need to insert the offers.
-                                if (checkOtherIkiScraperFinished()) {
-                                    ikiScrapeFinished = true;
-                                    tryToInsertOffers();
-                                }
-                            }
-                        });
-            }
-        });
-
-        Log.d(TAG, "Iki scraping starting");
-        wv.loadUrl(url);
-
     }
 
     // Iki offers are divided between multiple pages so we need to do the same scraping twice and the method needs to know if the entire Iki scraping is finished or not.
@@ -131,7 +90,7 @@ public class WebScraper {
                             // 45 is the number of offers loaded in a single step (button click)
                             loadsToMake = (itemsToLoad / 45) + 1;
                             calculateLoadsToMake = false;
-                            Log.d(TAG, "onReceiveValue: loads to make for Maxima" + loadsToMake);
+                            Log.d(TAG, "onReceiveValue: loads to make for Maxima " + loadsToMake);
                         }
                     });
                 }
@@ -141,7 +100,7 @@ public class WebScraper {
                             new ValueCallback<String>() {
                                 @Override
                                 public void onReceiveValue(String s) {
-                                    Log.d(TAG, "Maxima: loading additional offer html");
+                                    Log.d(TAG, "Maxima: loading additional offer html (" + timesLoaded + "/" + loadsToMake + ")");
                                 }
                             });
 
@@ -186,8 +145,27 @@ public class WebScraper {
     }
 
     public void startScraping() {
-        startScrapingIki(IKI_WEEKLY_URL);
-        startScrapingIki(IKI_MONTHLY_URL);
+        OffersRepository.TaskDelegate delegate = new OffersRepository.TaskDelegate() {
+            @Override
+            public void taskCompleted() {
+            }
+
+            @Override
+            public void taskCompleted(List<Offer> ikiOffers) {
+                offers.addAll(ikiOffers);
+
+                // Check if we need to insert the offers.
+                if (checkOtherIkiScraperFinished()) {
+                    ikiScrapeFinished = true;
+                    tryToInsertOffers();
+                }
+            }
+        };
+
+        // No need to run any JavaScript for Iki scraping so we can use Jsoup for connection instead of WebViews.
+        new IkiScraper(delegate).execute(IKI_WEEKLY_URL);
+        new IkiScraper(delegate).execute(IKI_MONTHLY_URL);
+
         startScrapingMaxima();
     }
 }

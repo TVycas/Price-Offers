@@ -73,6 +73,10 @@ public class OffersRepository {
                 // Start scraping after the database is deleted
                 webScraper.startScraping();
             }
+
+            @Override
+            public void taskCompleted(List<Offer> offers) {
+            }
         }).execute();
     }
 
@@ -97,6 +101,8 @@ public class OffersRepository {
     // A delegate interface for notifying the main thread that the async tasks are completed
     public interface TaskDelegate {
         void taskCompleted();
+
+        void taskCompleted(List<Offer> offers);
     }
 
     private static class updateOfferAsyncTask extends AsyncTask<Offer, Void, Void> {
