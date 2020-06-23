@@ -41,10 +41,10 @@ public class WebScraper {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 String uri = request.getUrl().toString();
-                if (uri.contains("css") || uri.contains("ico") || uri.contains("facebook") || uri.contains("google") || uri.contains("iki_design")) {
+                // We only need the html for the offer scraping
+                if (!uri.endsWith("page=1000")) {
                     return new WebResourceResponse("text/javascript", "UTF-8", null);
                 }
-
                 return super.shouldInterceptRequest(view, request);
             }
 
