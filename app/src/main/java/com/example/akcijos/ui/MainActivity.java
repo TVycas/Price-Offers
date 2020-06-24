@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Get stored time of last refresh
         sharedPref = getPreferences(Context.MODE_PRIVATE);
-        String defaultRefreshDate = getString(R.string.default_refresh_date);
         Long lastRefreshedDate = sharedPref.getLong(getString(R.string.saved_last_refresh_date_key), 0);
 
         // Update the TextView based on the returned value
@@ -95,10 +94,18 @@ public class MainActivity extends AppCompatActivity {
             long timeDifference = currentTime - lastRefreshedDate;
             int days = (int) (timeDifference / (1000 * 60 * 60 * 24));
 
-            lastRefreshedTextView.setText(getString(R.string.last_time_refreshed, days));
+            if (days == 0) {
+                lastRefreshedTextView.setText(getString(R.string.last_time_refreshed_today));
+            } else if (days == 1) {
+                lastRefreshedTextView.setText(getString(R.string.last_time_refreshed_yesterday));
+            } else {
+                lastRefreshedTextView.setText(getString(R.string.last_time_refreshed, days));
+            }
+
         } else {
-            lastRefreshedTextView.setText(defaultRefreshDate);
+            lastRefreshedTextView.setText(getString(R.string.default_refresh_date));
         }
+
     }
 
     @Override

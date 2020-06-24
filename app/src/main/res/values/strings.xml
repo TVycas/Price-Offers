@@ -31,9 +31,12 @@
 
     <string name="last_time_refreshed">Last refreshed %1$d days ago</string>
     <string name="default_refresh_date">Offers have never been refreshed</string>
+    <string name="last_time_refreshed_today">Last refreshed today</string>
     <string name="saved_last_refresh_date_key">1</string>
+
     <string name="selection_info">Selection info</string>
     <string name="shop_selection_start">\"Selected shops: \"</string>
     <string name="shop_selection_no_shops">No selected shops.</string>
+    <string name="last_time_refreshed_yesterday">Last refreshed yesterday</string>
 
 </resources>
