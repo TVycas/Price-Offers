@@ -2,7 +2,6 @@ package com.example.akcijos.scrapers;
 
 import android.app.Application;
 import android.util.Log;
-import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -83,41 +82,30 @@ public class WebScraper {
             public void onPageFinished(WebView view, String url) {
                 // Calculate how many button clicks is needed to load the entire offers page for Maxima
                 if (calculateLoadsToMake) {
-                    wv.evaluateJavascript("javascript:document.getElementById('items_cnt').textContent;", new ValueCallback<String>() {
-                        @Override
-                        public void onReceiveValue(String value) {
-                            value = value.replace("\"", "");
-                            int itemsToLoad = Integer.parseInt(value);
+                    wv.evaluateJavascript("javascript:document.getElementById('items_cnt').textContent;", value -> {
+                        value = value.replace("\"", "");
+                        int itemsToLoad = Integer.parseInt(value);
 
-                            // 45 is the number of offers loaded in a single step (button click)
-                            loadsToMake = (itemsToLoad / 45) + 1;
-                            calculateLoadsToMake = false;
-                            Log.d(TAG, "onReceiveValue: loads to make for Maxima " + loadsToMake);
-                        }
+                        // 45 is the number of offers loaded in a single step (button click)
+                        loadsToMake = (itemsToLoad / 45) + 1;
+                        calculateLoadsToMake = false;
+                        Log.d(TAG, "onReceiveValue: loads to make for Maxima " + loadsToMake);
                     });
                 }
 
                 if (timesLoaded < loadsToMake) {
                     wv.evaluateJavascript("javascript:document.getElementsByClassName('btn grey')[0].click();",
-                            new ValueCallback<String>() {
-                                @Override
-                                public void onReceiveValue(String s) {
-                                    Log.d(TAG, "Maxima: loading additional offer html (" + timesLoaded + "/" + loadsToMake + ")");
-                                }
-                            });
+                            s -> Log.d(TAG, "Maxima: loading additional offer html (" + timesLoaded + "/" + loadsToMake + ")"));
 
                     timesLoaded++;
                 } else {
                     wv.evaluateJavascript("javascript:window.ANDROID.scrapeMaximaHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');",
-                            new ValueCallback<String>() {
-                                @Override
-                                public void onReceiveValue(String value) {
-                                    // Scraping finished so we can insert the offers to the database
-                                    // No race conditions can happen because this code is executed on the main thread
-                                    offers.addAll(javaScriptInterface.getMaximaOffers());
-                                    maximaScrapeFinished = true;
-                                    tryToInsertOffers();
-                                }
+                            value -> {
+                                // Scraping finished so we can insert the offers to the database
+                                // No race conditions can happen because this code is executed on the main thread
+                                offers.addAll(javaScriptInterface.getMaximaOffers());
+                                maximaScrapeFinished = true;
+                                tryToInsertOffers();
                             });
                 }
             }

@@ -100,12 +100,9 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             // Remove the old listener and replace with new one
             holder.checkBox.setOnCheckedChangeListener(null);
             holder.checkBox.setChecked(current.getIsSelected());
-            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (checkedListener != null) {
-                        checkedListener.onCheckedChanged(buttonView, isChecked, position);
-                    }
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (checkedListener != null) {
+                    checkedListener.onCheckedChanged(buttonView, isChecked, position);
                 }
             });
         } else {

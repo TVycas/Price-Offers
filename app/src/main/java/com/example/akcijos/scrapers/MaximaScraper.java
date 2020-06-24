@@ -11,22 +11,21 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class MaximaScraper {
+class MaximaScraper {
 
     private static final String TAG = MaximaScraper.class.getName();
     private final String html;
-    private ArrayList<Offer> offers;
 
-    public MaximaScraper(String html) {
+    MaximaScraper(String html) {
         this.html = html;
     }
 
-    public ArrayList<Offer> scrapeOffers() {
+    ArrayList<Offer> scrapeOffers() {
         Log.d(TAG, "Maxima scraping started");
         Document doc = Jsoup.parse(html);
 
         Elements elems = doc.getElementsByClass("col-third");
-        offers = new ArrayList<>();
+        ArrayList<Offer> offers = new ArrayList<>();
 
         for (Element e : elems) {
             String title = e.getElementsByClass("title").text();

@@ -5,12 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,26 +52,20 @@ public class UserCartFragment extends Fragment {
         recyclerView.setAdapter(cartListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        cartListAdapter.setOnCheckedChangedListener(new OfferListAdapter.CheckedChangeListener() {
-            // Get the offer object that was selected by the user and update the database to store the new selection value
-            @Override
-            public void onCheckedChanged(CompoundButton view, boolean isChecked, int position) {
-                Offer offer = cartListAdapter.getOfferAtPosition(position);
-                Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
-                offer.setIsSelected(isChecked);
-                viewModel.updateOffer(offer);
-            }
+        // Get the offer object that was selected by the user and update the database to store the new selection value
+        cartListAdapter.setOnCheckedChangedListener((view, isChecked, position) -> {
+            Offer offer = cartListAdapter.getOfferAtPosition(position);
+            Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
+            offer.setIsSelected(isChecked);
+            viewModel.updateOffer(offer);
         });
 
         // Observe ViewModel
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(MainActivityViewModel.class);
-        viewModel.getSelectedOffers().observe(this, new Observer<List<Offer>>() {
-            // Update the cart as soon as the database changes.
-            @Override
-            public void onChanged(List<Offer> offers) {
-                cartListAdapter.setDisplayedOffers(offers, true);
-                setSelectionInfo(offers);
-            }
+        // Update the cart as soon as the database changes.
+        viewModel.getSelectedOffers().observe(this, offers -> {
+            cartListAdapter.setDisplayedOffers(offers, true);
+            setSelectionInfo(offers);
         });
     }
 
@@ -90,18 +82,17 @@ public class UserCartFragment extends Fragment {
             }
         }
 
-        String selectionInfo = "";
+        StringBuilder selectionInfo;
         if (offerShopsCount.keySet().size() != 0) {
-            selectionInfo = getString(R.string.shop_selection_start);
+            selectionInfo = new StringBuilder(getString(R.string.shop_selection_start));
             for (String shopName : offerShopsCount.keySet()) {
-                selectionInfo += shopName + " (" + offerShopsCount.get(shopName) + " offers), ";
+                selectionInfo.append(shopName).append(" (").append(offerShopsCount.get(shopName)).append(" offers), ");
             }
-
-            selectionInfo = selectionInfo.substring(0, selectionInfo.length() - 2) + ".";
+            selectionInfo = new StringBuilder(selectionInfo.substring(0, selectionInfo.length() - 2) + ".");
         } else {
-            selectionInfo = getString(R.string.shop_selection_no_shops);
+            selectionInfo = new StringBuilder(getString(R.string.shop_selection_no_shops));
         }
 
-        selectionInfoTextView.setText(selectionInfo);
+        selectionInfoTextView.setText(selectionInfo.toString());
     }
 }

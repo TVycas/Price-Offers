@@ -32,7 +32,7 @@ public class OffersRepository {
         return selectedOffers;
     }
 
-    public LiveData<List<Offer>> filterOffers(int filterSelection) {
+    LiveData<List<Offer>> filterOffers(int filterSelection) {
         switch (filterSelection) {
             case 0:
                 Log.d(TAG, "filterOffers: Alphabetic, id = " + filterSelection);
@@ -88,12 +88,13 @@ public class OffersRepository {
     private static class insertAsyncTask extends AsyncTask<List<Offer>, Void, Void> {
         private OfferDao asyncTaskDao;
 
-        public insertAsyncTask(OfferDao offerDao) {
+        insertAsyncTask(OfferDao offerDao) {
             asyncTaskDao = offerDao;
         }
 
+        @SafeVarargs
         @Override
-        protected Void doInBackground(List<Offer>... lists) {
+        protected final Void doInBackground(List<Offer>... lists) {
             for (Offer offer : lists[0]) {
                 asyncTaskDao.insert(offer);
             }

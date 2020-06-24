@@ -31,7 +31,7 @@ public class AsyncScrapeTask extends AsyncTask<Void, Void, List<Offer>> {
         Log.d(TAG, scraper.getShopName() + " scraping started");
         ArrayList<Offer> offers = new ArrayList<>();
 
-        Document doc = null;
+        Document doc;
         try {
             doc = Jsoup.connect(scraper.getOffersUrl()).get();
             Elements elems = doc.getElementsByClass(scraper.getOffersContainer());

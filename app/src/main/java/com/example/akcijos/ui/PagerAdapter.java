@@ -6,9 +6,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 public class PagerAdapter extends FragmentPagerAdapter {
-    int numOfTabs;
+    private int numOfTabs;
 
-    public PagerAdapter(@NonNull FragmentManager fm, int behavior) {
+    PagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
         this.numOfTabs = behavior;
     }
@@ -22,7 +22,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new UserCartFragment();
             default:
-                return null;
+                return new AllOffersFragment();
         }
     }
 

@@ -7,13 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.akcijos.MainActivityViewModel;
 import com.example.akcijos.R;
 import com.example.akcijos.database.Offer;
-
-import java.util.List;
 
 
 /**
@@ -56,34 +52,28 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
         recyclerView.setAdapter(offerListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        offerListAdapter.setOnCheckedChangedListener(new OfferListAdapter.CheckedChangeListener() {
-            // Get the offer object that was selected by the user and update the database to store the new selection value
-            @Override
-            public void onCheckedChanged(CompoundButton view, boolean isChecked, int position) {
-                Offer offer = offerListAdapter.getOfferAtPosition(position);
-                Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
-                offer.setIsSelected(isChecked);
-                viewModel.updateOffer(offer);
+        // Get the offer object that was selected by the user and update the database to store the new selection value
+        offerListAdapter.setOnCheckedChangedListener((view, isChecked, position) -> {
+            Offer offer = offerListAdapter.getOfferAtPosition(position);
+            Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
+            offer.setIsSelected(isChecked);
+            viewModel.updateOffer(offer);
 
-            }
         });
 
         // Observe ViewModel
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(MainActivityViewModel.class);
-        viewModel.getAllOffers().observe(this, new Observer<List<Offer>>() {
-            @Override
-            public void onChanged(List<Offer> offers) {
-                if (offers.size() != 0) {
-                    getActivity().findViewById(R.id.progress_circular).setVisibility(View.GONE);
-                }
+        viewModel.getAllOffers().observe(this, offers -> {
+            if (offers.size() != 0) {
+                getActivity().findViewById(R.id.progress_circular).setVisibility(View.GONE);
+            }
 
-                if (!queryText.equals("")) {
-                    // Don't update the dataSetChanged because it will update after filtering
-                    offerListAdapter.setDisplayedOffers(offers, false);
-                    offerListAdapter.getFilter().filter(queryText);
-                } else {
-                    offerListAdapter.setDisplayedOffers(offers, true);
-                }
+            if (!queryText.equals("")) {
+                // Don't update the dataSetChanged because it will update after filtering
+                offerListAdapter.setDisplayedOffers(offers, false);
+                offerListAdapter.getFilter().filter(queryText);
+            } else {
+                offerListAdapter.setDisplayedOffers(offers, true);
             }
         });
 

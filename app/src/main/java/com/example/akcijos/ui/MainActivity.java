@@ -10,21 +10,17 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.akcijos.MainActivityViewModel;
 import com.example.akcijos.R;
-import com.example.akcijos.database.Offer;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Calendar;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getName();
     private MainActivityViewModel viewModel;
     private SharedPreferences sharedPref;
 
@@ -71,12 +67,7 @@ public class MainActivity extends AppCompatActivity {
         updateLastRefreshTextView();
 
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
-        viewModel.getAllOffers().observe(this, new Observer<List<Offer>>() {
-            @Override
-            public void onChanged(List<Offer> offers) {
-                updateLastRefreshTextView();
-            }
-        });
+        viewModel.getAllOffers().observe(this, offers -> updateLastRefreshTextView());
 
     }
 

@@ -3,7 +3,6 @@ package com.example.akcijos;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,7 +14,6 @@ import java.util.List;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
-    private static final String TAG = MainActivityViewModel.class.getName();
     private OffersRepository repo;
     private LiveData<List<Offer>> selectedOffers;
     private MutableLiveData<Integer> filterID = new MutableLiveData<>(0);
@@ -35,12 +33,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Offer>> getAllOffers() {
-        return Transformations.switchMap(filterID, new Function<Integer, LiveData<List<Offer>>>() {
-            @Override
-            public LiveData<List<Offer>> apply(Integer filterID) {
-                return repo.filterOffers(filterID);
-            }
-        });
+        return Transformations.switchMap(filterID, filterID -> repo.filterOffers(filterID));
     }
 
     public LiveData<List<Offer>> getSelectedOffers() {
