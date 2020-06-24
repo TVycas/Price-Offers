@@ -3,8 +3,8 @@ package com.example.akcijos.scrapers;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.akcijos.OffersRepository;
 import com.example.akcijos.database.Offer;
+import com.example.akcijos.repositories.OffersRepository;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

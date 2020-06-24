@@ -13,9 +13,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.akcijos.MainActivityViewModel;
 import com.example.akcijos.R;
 import com.example.akcijos.database.Offer;
+import com.example.akcijos.viewmodels.MainActivityViewModel;
 
 import java.util.HashMap;
 import java.util.List;

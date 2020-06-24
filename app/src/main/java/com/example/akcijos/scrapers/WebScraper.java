@@ -10,9 +10,9 @@ import android.webkit.WebViewClient;
 
 import androidx.annotation.Nullable;
 
-import com.example.akcijos.OffersRepository;
 import com.example.akcijos.R;
 import com.example.akcijos.database.Offer;
+import com.example.akcijos.repositories.OffersRepository;
 
 import java.util.ArrayList;
 import java.util.List;

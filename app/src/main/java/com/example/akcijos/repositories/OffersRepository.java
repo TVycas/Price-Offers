@@ -1,4 +1,4 @@
-package com.example.akcijos;
+package com.example.akcijos.repositories;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -20,7 +20,7 @@ public class OffersRepository {
     private OfferDao offerDao;
     private LiveData<List<Offer>> selectedOffers;
 
-    OffersRepository(Application application) {
+    public OffersRepository(Application application) {
         OfferRoomDatabase db = OfferRoomDatabase.getDatabase(application);
         offerDao = db.offerDao();
 
@@ -28,11 +28,11 @@ public class OffersRepository {
         webScraper = new WebScraper(application, this);
     }
 
-    LiveData<List<Offer>> getSelectedOffers() {
+    public LiveData<List<Offer>> getSelectedOffers() {
         return selectedOffers;
     }
 
-    LiveData<List<Offer>> filterOffers(int filterSelection) {
+    public LiveData<List<Offer>> filterOffers(int filterSelection) {
         switch (filterSelection) {
             case 0:
                 Log.d(TAG, "filterOffers: Alphabetic, id = " + filterSelection);
@@ -61,11 +61,11 @@ public class OffersRepository {
         new insertAsyncTask(offerDao).execute(offers);
     }
 
-    void update(Offer offer) {
+    public void update(Offer offer) {
         new updateOfferAsyncTask(offerDao).execute(offer);
     }
 
-    void refreshDatabase() {
+    public void refreshDatabase() {
         deleteAllAndStartScraping();
     }
 

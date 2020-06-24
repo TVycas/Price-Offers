@@ -13,8 +13,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.akcijos.MainActivityViewModel;
 import com.example.akcijos.R;
+import com.example.akcijos.viewmodels.MainActivityViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Calendar;
