@@ -7,8 +7,10 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "offer_table")
 public class Offer {
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
     @NonNull
-    @PrimaryKey
     private final String TITLE;
 
     private final int PERCENTAGE;
@@ -21,7 +23,7 @@ public class Offer {
 
     private boolean isSelected;
 
-    public Offer(String TITLE, int PERCENTAGE, double PRICE, String IMG, String SHOP_NAME) {
+    public Offer(@NonNull String TITLE, int PERCENTAGE, double PRICE, String IMG, String SHOP_NAME) {
         this.TITLE = TITLE;
         this.PERCENTAGE = PERCENTAGE;
         this.PRICE = PRICE;
@@ -30,6 +32,7 @@ public class Offer {
         this.isSelected = false;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "title = " + TITLE
@@ -40,6 +43,15 @@ public class Offer {
                 + "\nisSelected = " + isSelected;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @NonNull
     public String getTITLE() {
         return TITLE;
     }
