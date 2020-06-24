@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,7 +19,9 @@ import com.example.akcijos.MainActivityViewModel;
 import com.example.akcijos.R;
 import com.example.akcijos.database.Offer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -69,7 +72,31 @@ public class UserCartFragment extends Fragment {
             @Override
             public void onChanged(List<Offer> offers) {
                 cartListAdapter.setDisplayedOffers(offers, true);
+                setSelectionInfo(offers);
             }
         });
+    }
+
+    private void setSelectionInfo(List<Offer> offers) {
+        TextView selectionInfoTextView = getView().findViewById(R.id.selection_info);
+        Map<String, Integer> offerShopsCount = new HashMap<>();
+
+        for (Offer offer : offers) {
+            String shopName = offer.getSHOP_NAME();
+            if (!offerShopsCount.containsKey(shopName)) {
+                offerShopsCount.put(shopName, 1);
+            } else {
+                offerShopsCount.put(shopName, offerShopsCount.get(shopName) + 1);
+            }
+        }
+
+        String selectionInfo = "Selected shops: ";
+        for (String shopName : offerShopsCount.keySet()) {
+            selectionInfo += shopName + " (" + offerShopsCount.get(shopName) + " offers), ";
+        }
+
+        selectionInfo = selectionInfo.substring(0, selectionInfo.length() - 2) + ".";
+        Log.d(TAG, "setSelectionInfo: " + selectionInfo);
+        selectionInfoTextView.setText(selectionInfo);
     }
 }

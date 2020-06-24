@@ -24,6 +24,7 @@ public class WebScraper {
     private final String MAXIMA_URL;
     private final String IKI_MONTHLY_URL;
     private final String IKI_WEEKLY_URL;
+    private final String LIDL_URL;
     private final Application application;
     private final OffersRepository repo;
     private JavaScriptInterface javaScriptInterface = new JavaScriptInterface();
@@ -31,6 +32,7 @@ public class WebScraper {
     private boolean[] finishedIkiScrapers = new boolean[2];
     private boolean maximaScrapeFinished;
     private boolean ikiScrapeFinished;
+    private boolean lidlScrapeFinished;
 
     public WebScraper(Application application, OffersRepository repo) {
         this.application = application;
@@ -40,6 +42,7 @@ public class WebScraper {
         this.IKI_WEEKLY_URL = application.getString(R.string.iki_weekly_url);
         this.IKI_MONTHLY_URL = application.getString(R.string.iki_monthly_url);
         this.MAXIMA_URL = application.getString(R.string.maxima_url);
+        this.LIDL_URL = application.getString(R.string.lidl_url);
     }
 
     // Iki offers are divided between multiple pages so we need to do the same scraping twice and the method needs to know if the entire Iki scraping is finished or not.
@@ -60,7 +63,6 @@ public class WebScraper {
 
     private void startScrapingMaxima() {
         final WebView wv = getWebView();
-        maximaScrapeFinished = false;
 
         wv.setWebViewClient(new WebViewClient() {
             int timesLoaded = 0;
@@ -129,7 +131,7 @@ public class WebScraper {
 
     private void tryToInsertOffers() {
         Log.d(TAG, "tryToInsertOffers: trying to insert offers. Maxima finished = " + maximaScrapeFinished + "; iki finished = " + ikiScrapeFinished);
-        if (maximaScrapeFinished && ikiScrapeFinished) {
+        if (maximaScrapeFinished && ikiScrapeFinished && lidlScrapeFinished) {
             repo.insert(offers);
         }
     }
@@ -145,7 +147,7 @@ public class WebScraper {
     }
 
     public void startScraping() {
-        OffersRepository.TaskDelegate delegate = new OffersRepository.TaskDelegate() {
+        OffersRepository.TaskDelegate ikiDelegate = new OffersRepository.TaskDelegate() {
             @Override
             public void taskCompleted() {
             }
@@ -162,9 +164,31 @@ public class WebScraper {
             }
         };
 
-        // No need to run any JavaScript for Iki scraping so we can use Jsoup for connection instead of WebViews.
-        new IkiScraper(delegate).execute(IKI_WEEKLY_URL);
-        new IkiScraper(delegate).execute(IKI_MONTHLY_URL);
+        OffersRepository.TaskDelegate lidlDelegate = new OffersRepository.TaskDelegate() {
+            @Override
+            public void taskCompleted() {
+            }
+
+            @Override
+            public void taskCompleted(List<Offer> lidlOffers) {
+                offers.addAll(lidlOffers);
+
+                // Check if we need to insert the offers.
+                if (checkOtherIkiScraperFinished()) {
+                    lidlScrapeFinished = true;
+                    tryToInsertOffers();
+                }
+            }
+        };
+
+        maximaScrapeFinished = false;
+        ikiScrapeFinished = false;
+        lidlScrapeFinished = false;
+
+        // No need to run any JavaScript for Iki and Lidl scraping so we can use Jsoup for connection instead of WebViews.
+        new IkiScraper(ikiDelegate).execute(IKI_WEEKLY_URL);
+        new IkiScraper(ikiDelegate).execute(IKI_MONTHLY_URL);
+        new LidlScraper(lidlDelegate).execute(LIDL_URL);
 
         startScrapingMaxima();
     }

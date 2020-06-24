@@ -21,7 +21,8 @@
             android:id="@+id/last_refreshed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
+            android:textColor="@android:color/white"
             android:text="@string/last_time_refreshed" />
 
     </androidx.appcompat.widget.Toolbar>

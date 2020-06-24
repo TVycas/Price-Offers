@@ -12,6 +12,9 @@ import java.util.List;
 @Dao
 public interface OfferDao {
 
+    // TODO add id as primary key because multiple shops could have the same thing as an offer. Or maybe use composite primary key but idk about the efficiency of that.
+    // https://stackoverflow.com/questions/1110349/how-can-i-define-a-composite-primary-key-in-sql
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Offer offer);
 

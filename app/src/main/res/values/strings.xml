@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VewViewTests</string>
+    <string name="app_name">Akcijos</string>
     <string name="offer_title_placeholder">Offer title</string>
     <string name="offer_price_placeholder">Offer Price</string>
     <string name="no_offer">Prekė nepasiekiama</string>
@@ -30,5 +30,7 @@
     <string name="last_time_refreshed">Last refreshed %1$d days ago</string>
     <string name="default_refresh_date">Offers have never been refreshed</string>
     <string name="saved_last_refresh_date_key">1</string>
+    <string name="selection_info">Selection info</string>
+    <string name="lidl_url">https://www.lidl.lt/lt/pasiulymai</string>
 
 </resources>

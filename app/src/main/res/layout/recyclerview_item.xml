@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="2dp"
-    android:background="@drawable/layout_bg"
     android:orientation="vertical"
-    android:padding="15sp">
+    android:paddingHorizontal="15dp"
+    android:paddingTop="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,6 +32,7 @@
             android:textAlignment="viewEnd"
             android:textColor="#3E3A3A"
             android:textSize="14sp"
+            android:layout_marginEnd="5dp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -63,5 +64,12 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/black" />
 
 </LinearLayout>
