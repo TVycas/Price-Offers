@@ -90,12 +90,19 @@ public class UserCartFragment extends Fragment {
             }
         }
 
-        String selectionInfo = "Selected shops: ";
-        for (String shopName : offerShopsCount.keySet()) {
-            selectionInfo += shopName + " (" + offerShopsCount.get(shopName) + " offers), ";
+
+        String selectionInfo = "";
+        if (offerShopsCount.keySet().size() != 0) {
+            selectionInfo = "Selected shops: ";
+            for (String shopName : offerShopsCount.keySet()) {
+                selectionInfo += shopName + " (" + offerShopsCount.get(shopName) + " offers), ";
+            }
+
+            selectionInfo = selectionInfo.substring(0, selectionInfo.length() - 2) + ".";
+        } else {
+            selectionInfo = "No selected shops.";
         }
 
-        selectionInfo = selectionInfo.substring(0, selectionInfo.length() - 2) + ".";
         Log.d(TAG, "setSelectionInfo: " + selectionInfo);
         selectionInfoTextView.setText(selectionInfo);
     }
