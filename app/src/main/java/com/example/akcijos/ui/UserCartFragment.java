@@ -93,14 +93,14 @@ public class UserCartFragment extends Fragment {
 
         String selectionInfo = "";
         if (offerShopsCount.keySet().size() != 0) {
-            selectionInfo = "Selected shops: ";
+            selectionInfo = getString(R.string.shop_selection_start);
             for (String shopName : offerShopsCount.keySet()) {
                 selectionInfo += shopName + " (" + offerShopsCount.get(shopName) + " offers), ";
             }
 
             selectionInfo = selectionInfo.substring(0, selectionInfo.length() - 2) + ".";
         } else {
-            selectionInfo = "No selected shops.";
+            selectionInfo = getString(R.string.shop_selection_no_shops);
         }
 
         Log.d(TAG, "setSelectionInfo: " + selectionInfo);

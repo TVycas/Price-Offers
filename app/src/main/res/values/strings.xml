@@ -33,5 +33,7 @@
     <string name="saved_last_refresh_date_key">1</string>
     <string name="selection_info">Selection info</string>
     <string name="lidl_url">https://www.lidl.lt/lt/pasiulymai</string>
+    <string name="shop_selection_start">\"Selected shops: \"</string>
+    <string name="shop_selection_no_shops">No selected shops.</string>
 
 </resources>
