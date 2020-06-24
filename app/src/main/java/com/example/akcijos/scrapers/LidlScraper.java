@@ -52,7 +52,7 @@ public class LidlScraper extends AsyncTask<String, Void, List<Offer>> {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "doInBackground: Lidl scraping finished");
+        Log.d(TAG, "doInBackground: Lidl scraping finished, loaded " + offers.size() + " offers.");
 
         return offers;
     }

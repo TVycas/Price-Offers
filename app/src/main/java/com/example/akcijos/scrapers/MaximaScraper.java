@@ -37,6 +37,8 @@ public class MaximaScraper {
             offers.add(new Offer(title, percentage, price, img, "Maxima"));
         }
 
+        Log.d(TAG, "scrapeOffers: Maxima scraping finished, loaded " + offers.size() + " offers.");
+
         return offers;
     }
 

@@ -36,6 +36,9 @@ public interface OfferDao {
     @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Maxima'")
     LiveData<List<Offer>> getAllMaximaOffers();
 
+    @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Lidl'")
+    LiveData<List<Offer>> getAllLidlOffers();
+
     @Update
     void update(Offer... offers);
 

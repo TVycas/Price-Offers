@@ -49,7 +49,7 @@ public class IkiScraper extends AsyncTask<String, Void, List<Offer>> {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "doInBackground: Iki scraping finished");
+        Log.d(TAG, "doInBackground: Iki scraping finished, loaded " + offers.size() + " offers.");
 
         return offers;
     }

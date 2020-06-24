@@ -112,7 +112,6 @@ public class WebScraper {
                             new ValueCallback<String>() {
                                 @Override
                                 public void onReceiveValue(String value) {
-                                    Log.d(TAG, "Maxima scraping finished");
                                     // Scraping finished so we can insert the offers to the database
                                     // No race conditions can happen because this code is executed on the main thread
                                     offers.addAll(javaScriptInterface.getMaximaOffers());
