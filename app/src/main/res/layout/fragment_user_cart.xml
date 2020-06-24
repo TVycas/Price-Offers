@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:background="@color/colorAccent"
         android:gravity="center_vertical"
-        android:text="Your Cart"
+        android:text="@string/user_cart_top_title"
         android:paddingStart="15dp"
         android:textColor="#000000"
         android:textSize="25sp"

@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Akcijos</string>
+
+    <!--    Recycler view item text-->
+    <string name="offer_title_placeholder">Pasiūlimo Pavadinimas</string>
+    <string name="offer_price_placeholder">Pasiūlimo Kaina</string>
+    <string name="add_to_cart_checkbox_hint">Pridėti į krepšelį</string>
+    <string name="shop_name_placeholder">Parduotuvės Pavadinimas</string>
+    <string name="percentage">-%1$d%%</string>
+    <string name="price_and_percentage">%1$.2f€ (-%2$d%%)</string>
+    <string name="price">%1$.2f€</string>
+
+    <!--    Top tab labels-->
+    <string name="all_offers_tab_label">Prekių Pasirinkimas</string>
+    <string name="user_cart_tab_label">Krepšelis</string>
+
+    <!--    Misc-->
+    <string name="user_cart_top_title">Jūsų Krepšelis</string>
+    <string name="no_offers_available">Prekė nepasiekiama</string>
+    <string name="search_view_hint">Ieškoti prekės</string>
+
+    <!--    Recyclerview filter categories-->
+    <string-array name="filter_names">
+        <item>A - Ž</item>
+        <item>Akcijos ↑</item>
+        <item>Akcijos ↓</item>
+        <item>Tik Iki</item>
+        <item>Tik Maxima</item>
+        <item>Tik Lidl</item>
+    </string-array>
+
+    <!--    Offer urls for scraping-->
+    <string name="iki_weekly_url">https://iki.lt/akcija_tag/tag_sia-savaite/?ipage=9&amp;itag=&amp;per_page=1000</string>
+    <string name="iki_monthly_url"><![CDATA[https://iki.lt/akcija_tag/tag_menesio-akcija/?ipage=48&itag=&per_page=1000]]></string>
+    <string name="maxima_url">https://www.maxima.lt/akcijos</string>
+    <string name="lidl_url">https://www.lidl.lt/lt/pasiulymai</string>
+
+    <!--    Info on when was the last refresh and refresh button title-->
+    <string name="refresh_offers_button_title">Atnaujinti Pasiūlymus</string>
+    <string name="last_refreshed_multi_days">Atnaujinta prieš %1$d d.</string>
+    <string name="last_refresh_today">Atnaujinta šiandien</string>
+    <string name="last_refreshed_yesterday">Atnaujinta vakar</string>
+    <string name="last_refresh_never">Pasiūlymai niekada nebuvo atnaujinti</string>
+    <string name="last_refresh_key_id">1</string>
+
+    <!--    Info about user selections-->
+    <string name="shop_selection_start">Pasirinkitos parduotuvės:\u0020</string>
+    <string name="shop_selection_no_shops">Nėra pasirinktų parduotuvių.</string>
+
+</resources>

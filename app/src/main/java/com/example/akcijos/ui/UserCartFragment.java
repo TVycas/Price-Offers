@@ -86,7 +86,10 @@ public class UserCartFragment extends Fragment {
         if (offerShopsCount.keySet().size() != 0) {
             selectionInfo = new StringBuilder(getString(R.string.shop_selection_start));
             for (String shopName : offerShopsCount.keySet()) {
-                selectionInfo.append(shopName).append(" (").append(offerShopsCount.get(shopName)).append(" offers), ");
+                selectionInfo.append(shopName)
+                        .append(" (")
+                        .append(offerShopsCount.get(shopName))
+                        .append("), ");
             }
             selectionInfo = new StringBuilder(selectionInfo.substring(0, selectionInfo.length() - 2) + ".");
         } else {
