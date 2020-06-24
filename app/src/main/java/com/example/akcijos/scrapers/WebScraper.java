@@ -185,10 +185,15 @@ public class WebScraper {
         lidlScrapeFinished = false;
 
         // No need to run any JavaScript for Iki and Lidl scraping so we can use Jsoup for connection instead of WebViews.
-        new IkiScraper(ikiDelegate).execute(IKI_WEEKLY_URL);
-        new IkiScraper(ikiDelegate).execute(IKI_MONTHLY_URL);
-        new LidlScraper(lidlDelegate).execute(LIDL_URL);
 
+        // Scrape Iki
+        new AsyncScrapeTask(ikiDelegate, new IkiScraper(IKI_WEEKLY_URL)).execute();
+        new AsyncScrapeTask(ikiDelegate, new IkiScraper(IKI_MONTHLY_URL)).execute();
+
+        // Scrape Lidl
+        new AsyncScrapeTask(lidlDelegate, new LidlScraper(LIDL_URL)).execute();
+
+        // Scrape Maxima
         startScrapingMaxima();
     }
 }

@@ -1,75 +1,66 @@
 package com.example.akcijos.scrapers;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
-import com.example.akcijos.OffersRepository;
-import com.example.akcijos.database.Offer;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+public class IkiScraper implements Scraper {
 
-public class IkiScraper extends AsyncTask<String, Void, List<Offer>> {
-    private static final String TAG = IkiScraper.class.getName();
+    private final String OFFERS_CONTAINER_CLASSNAME = "akcija__anchor akcija-inner";
+    private final String SHOP_NAME = "Iki";
+    private String ikiUrl;
 
-    private ArrayList<Offer> offers;
-    private OffersRepository.TaskDelegate delegate;
-
-    public IkiScraper(OffersRepository.TaskDelegate delegate) {
-        this.delegate = delegate;
+    IkiScraper(String url) {
+        ikiUrl = url;
     }
 
     @Override
-    protected List<Offer> doInBackground(String... strings) {
-        Log.d(TAG, "Iki scraping started");
+    public String getOffersUrl() {
+        return ikiUrl;
+    }
 
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(strings[0]).get();
+    void setOffersUrl(String ikiUrl) {
+        this.ikiUrl = ikiUrl;
+    }
 
-            Elements elems = doc.getElementsByClass("akcija__anchor akcija-inner");
-            offers = new ArrayList<>();
+    @Override
+    public String getShopName() {
+        return SHOP_NAME;
+    }
 
-            for (Element e : elems) {
-                String title = e.getElementsByClass("akcija__title").text();
-                double price = getPrice(e);
-                int percentage = getPercentage(e, price);
-                String img = getImageLink(e);
-                offers.add(new Offer(title, percentage, price, img, "Iki"));
+    @Override
+    public String getOffersContainer() {
+        return OFFERS_CONTAINER_CLASSNAME;
+    }
+
+    @Override
+    public boolean isOffer(Element e) {
+        return true;
+    }
+
+    @Override
+    public String getTitle(Element e) {
+        return e.getElementsByClass("akcija__title").text();
+    }
+
+    @Override
+    public double getPrice(Element e) {
+        double price = -1;
+        Elements priceCents = e.getElementsByClass("price-cents");
+
+        if (priceCents.size() != 0) {
+            Elements priceMain = e.getElementsByClass("price-main");
+            try {
+                price = Double.parseDouble(priceMain.get(0).text() + "." + priceCents.get(0).text());
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
             }
-
-        } catch (IOException e) {
-            Log.e(TAG, "doInBackground: Iki offers scraping failed");
-            e.printStackTrace();
         }
 
-        Log.d(TAG, "doInBackground: Iki scraping finished, loaded " + offers.size() + " offers.");
-
-        return offers;
+        return price;
     }
 
     @Override
-    protected void onPostExecute(List<Offer> offers) {
-        delegate.taskCompleted(offers);
-        super.onPostExecute(offers);
-    }
-
-    private String getImageLink(Element e) {
-        String img = "";
-        String imgHtml = e.getElementsByClass("akcija__image").get(0).html();
-        if (imgHtml.contains("src=")) {
-            img = imgHtml.substring(imgHtml.indexOf("src=") + 5, imgHtml.indexOf("alt") - 2);
-        }
-        return img;
-    }
-
-    private int getPercentage(Element e, double price) {
+    public int getPercentage(Element e, double price) {
         int percentage = -1;
 
         Elements priceCents = e.getElementsByClass("price-cents");
@@ -104,19 +95,13 @@ public class IkiScraper extends AsyncTask<String, Void, List<Offer>> {
         return percentage;
     }
 
-    private double getPrice(Element e) {
-        double price = -1;
-        Elements priceCents = e.getElementsByClass("price-cents");
-
-        if (priceCents.size() != 0) {
-            Elements priceMain = e.getElementsByClass("price-main");
-            try {
-                price = Double.parseDouble(priceMain.get(0).text() + "." + priceCents.get(0).text());
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-            }
+    @Override
+    public String getImg(Element e) {
+        String img = "";
+        String imgHtml = e.getElementsByClass("akcija__image").get(0).html();
+        if (imgHtml.contains("src=")) {
+            img = imgHtml.substring(imgHtml.indexOf("src=") + 5, imgHtml.indexOf("alt") - 2);
         }
-
-        return price;
+        return img;
     }
 }

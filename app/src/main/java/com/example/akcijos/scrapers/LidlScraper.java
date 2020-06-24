@@ -1,79 +1,51 @@
 package com.example.akcijos.scrapers;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
-import com.example.akcijos.OffersRepository;
-import com.example.akcijos.database.Offer;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+public class LidlScraper implements Scraper {
 
-public class LidlScraper extends AsyncTask<String, Void, List<Offer>> {
+    private final String OFFERS_CONTAINER_CLASSNAME = "col col--sm-4 col--xs-6";
+    private final String SHOP_NAME = "Lidl";
+    private final String LIDL_URL;
 
-    private static final String TAG = LidlScraper.class.getName();
-    private OffersRepository.TaskDelegate delegate;
-
-    public LidlScraper(OffersRepository.TaskDelegate delegate) {
-        this.delegate = delegate;
+    LidlScraper(String url) {
+        LIDL_URL = url;
     }
 
     @Override
-    protected List<Offer> doInBackground(String... strings) {
-        Log.d(TAG, "Lidl scraping started");
-        ArrayList<Offer> offers = new ArrayList<>();
-
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(strings[0]).get();
-            Elements elems = doc.getElementsByClass("col col--sm-4 col--xs-6");
-
-            for (Element e : elems) {
-                if (e.getElementsByClass("product__title").size() != 0) {
-
-                    String title = e.getElementsByClass("product__title").text().trim();
-                    String priceString = e.getElementsByClass("pricebox__price").text().replace(",", ".");
-                    double price = Double.parseDouble(priceString);
-                    int percentage = getPercentage(e, price);
-                    String img = getImageLink(e);
-
-                    offers.add(new Offer(title, percentage, price, img, "Lidl"));
-                }
-            }
-
-        } catch (IOException e) {
-            Log.e(TAG, "doInBackground: Lidl offers scraping failed");
-            e.printStackTrace();
-        }
-
-        Log.d(TAG, "doInBackground: Lidl scraping finished, loaded " + offers.size() + " offers.");
-
-        return offers;
+    public String getOffersUrl() {
+        return LIDL_URL;
     }
 
     @Override
-    protected void onPostExecute(List<Offer> offers) {
-        delegate.taskCompleted(offers);
-        super.onPostExecute(offers);
+    public String getShopName() {
+        return SHOP_NAME;
     }
 
-    private String getImageLink(Element e) {
-        String img = "";
-
-        String imgHtml = e.getElementsByTag("img").toString();
-        if (imgHtml.contains("src=")) {
-            img = imgHtml.substring(imgHtml.indexOf("src=") + 5, imgHtml.length() - 2);
-        }
-        return img;
+    @Override
+    public String getOffersContainer() {
+        return OFFERS_CONTAINER_CLASSNAME;
     }
 
-    private int getPercentage(Element e, double price) {
+    @Override
+    public boolean isOffer(Element e) {
+        return e.getElementsByClass("product__title").size() != 0;
+    }
+
+    @Override
+    public String getTitle(Element e) {
+        return e.getElementsByClass("product__title").text().trim();
+    }
+
+    @Override
+    public double getPrice(Element e) {
+        String priceString = e.getElementsByClass("pricebox__price").text().replace(",", ".");
+        return Double.parseDouble(priceString);
+    }
+
+    @Override
+    public int getPercentage(Element e, double price) {
         int percentage = -1;
 
         String highlight = e.getElementsByClass("pricebox__highlight").text();
@@ -93,4 +65,14 @@ public class LidlScraper extends AsyncTask<String, Void, List<Offer>> {
         return percentage;
     }
 
+    @Override
+    public String getImg(Element e) {
+        String img = "";
+
+        String imgHtml = e.getElementsByTag("img").toString();
+        if (imgHtml.contains("src=")) {
+            img = imgHtml.substring(imgHtml.indexOf("src=") + 5, imgHtml.length() - 2);
+        }
+        return img;
+    }
 }

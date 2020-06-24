@@ -90,7 +90,6 @@ public class UserCartFragment extends Fragment {
             }
         }
 
-
         String selectionInfo = "";
         if (offerShopsCount.keySet().size() != 0) {
             selectionInfo = getString(R.string.shop_selection_start);
@@ -103,7 +102,6 @@ public class UserCartFragment extends Fragment {
             selectionInfo = getString(R.string.shop_selection_no_shops);
         }
 
-        Log.d(TAG, "setSelectionInfo: " + selectionInfo);
         selectionInfoTextView.setText(selectionInfo);
     }
 }
