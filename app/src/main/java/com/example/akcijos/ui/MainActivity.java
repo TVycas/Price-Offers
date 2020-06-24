@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         // Create an instance of the tab layout from the view.
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         // Set the text for each tab.
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_label1));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_label2));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.all_offers_tab_label));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.user_cart_tab_label));
         // Set the tabs to fill the entire layout.
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Get stored time of last refresh
         sharedPref = getPreferences(Context.MODE_PRIVATE);
-        Long lastRefreshedDate = sharedPref.getLong(getString(R.string.saved_last_refresh_date_key), 0);
+        Long lastRefreshedDate = sharedPref.getLong(getString(R.string.last_refresh_key_id), 0);
 
         // Update the TextView based on the returned value
         if (lastRefreshedDate != 0) {
@@ -95,15 +95,15 @@ public class MainActivity extends AppCompatActivity {
             int days = (int) (timeDifference / (1000 * 60 * 60 * 24));
 
             if (days == 0) {
-                lastRefreshedTextView.setText(getString(R.string.last_time_refreshed_today));
+                lastRefreshedTextView.setText(getString(R.string.last_refresh_today));
             } else if (days == 1) {
-                lastRefreshedTextView.setText(getString(R.string.last_time_refreshed_yesterday));
+                lastRefreshedTextView.setText(getString(R.string.last_refreshed_yesterday));
             } else {
-                lastRefreshedTextView.setText(getString(R.string.last_time_refreshed, days));
+                lastRefreshedTextView.setText(getString(R.string.last_refreshed_multi_days, days));
             }
 
         } else {
-            lastRefreshedTextView.setText(getString(R.string.default_refresh_date));
+            lastRefreshedTextView.setText(getString(R.string.last_refresh_never));
         }
 
     }
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             // Save the offers refresh date
             long date = Calendar.getInstance().getTimeInMillis();
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putLong(getString(R.string.saved_last_refresh_date_key), date);
+            editor.putLong(getString(R.string.last_refresh_key_id), date);
             editor.apply();
 
             refreshDatabase();

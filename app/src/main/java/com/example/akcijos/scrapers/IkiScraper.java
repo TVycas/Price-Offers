@@ -18,10 +18,6 @@ public class IkiScraper implements Scraper {
         return ikiUrl;
     }
 
-    void setOffersUrl(String ikiUrl) {
-        this.ikiUrl = ikiUrl;
-    }
-
     @Override
     public String getShopName() {
         return SHOP_NAME;

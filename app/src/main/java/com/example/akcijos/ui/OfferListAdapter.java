@@ -110,7 +110,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             });
         } else {
             // Covers the case of data not being ready yet.
-            holder.offerTitleItemView.setText(R.string.no_offer);
+            holder.offerTitleItemView.setText(R.string.no_offers_available);
         }
     }
 

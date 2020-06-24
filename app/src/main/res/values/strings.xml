@@ -1,20 +1,23 @@
 <resources>
     <string name="app_name">Akcijos</string>
+
+    <!--    Recycler view item text-->
     <string name="offer_title_placeholder">Offer title</string>
     <string name="offer_price_placeholder">Offer Price</string>
-    <string name="no_offer">Prekė nepasiekiama</string>
-
-    <string name="tab_label1">Prekių Pasirinkimas</string>
-    <string name="tab_label2">Krepšelis</string>
-    <string name="add_to_cart">Add to cart</string>
-    <string name="shop_name">Shop name</string>
-    <string name="refresh_offers">Refresh Offers</string>
-    <string name="look_for_offer">Ieškoti prekės</string>
-
+    <string name="add_to_cart_checkbox_hint">Add to cart</string>
+    <string name="shop_name_placeholder">Shop name</string>
     <string name="percentage">-%1$d%%</string>
     <string name="price_and_percentage">%1$.2f€ (-%2$d%%)</string>
     <string name="price">%1$.2f€</string>
 
+    <!--    Top tab labels-->
+    <string name="all_offers_tab_label">Prekių Pasirinkimas</string>
+    <string name="user_cart_tab_label">Krepšelis</string>
+
+    <string name="no_offers_available">Prekė nepasiekiama</string>
+    <string name="search_view_hint">Ieškoti prekės</string>
+
+    <!--    Recyclerview filter categories-->
     <string-array name="filter_names">
         <item>A - Ž</item>
         <item>Akcijos ↑</item>
@@ -24,19 +27,22 @@
         <item>Tik Lidl</item>
     </string-array>
 
+    <!--    Offer urls for scraping-->
     <string name="iki_weekly_url">https://iki.lt/akcija_tag/tag_sia-savaite/?ipage=9&amp;itag=&amp;per_page=1000</string>
     <string name="iki_monthly_url"><![CDATA[https://iki.lt/akcija_tag/tag_menesio-akcija/?ipage=48&itag=&per_page=1000]]></string>
     <string name="maxima_url">https://www.maxima.lt/akcijos</string>
     <string name="lidl_url">https://www.lidl.lt/lt/pasiulymai</string>
 
-    <string name="last_time_refreshed">Last refreshed %1$d days ago</string>
-    <string name="default_refresh_date">Offers have never been refreshed</string>
-    <string name="last_time_refreshed_today">Last refreshed today</string>
-    <string name="saved_last_refresh_date_key">1</string>
+    <!--    Info on when was the last refresh and refresh button title-->
+    <string name="refresh_offers__button_title">Refresh Offers</string>
+    <string name="last_refreshed_multi_days">Last refreshed %1$d days ago</string>
+    <string name="last_refresh_today">Last refreshed today</string>
+    <string name="last_refreshed_yesterday">Last refreshed yesterday</string>
+    <string name="last_refresh_never">Offers have never been refreshed</string>
+    <string name="last_refresh_key_id">1</string>
 
-    <string name="selection_info">Selection info</string>
+    <!--    Info about user selections-->
     <string name="shop_selection_start">\"Selected shops: \"</string>
     <string name="shop_selection_no_shops">No selected shops.</string>
-    <string name="last_time_refreshed_yesterday">Last refreshed yesterday</string>
 
 </resources>

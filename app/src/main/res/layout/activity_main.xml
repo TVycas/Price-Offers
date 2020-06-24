@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:textColor="@android:color/white"
-            android:text="@string/last_time_refreshed" />
+            android:text="@string/last_refreshed_multi_days" />
 
     </androidx.appcompat.widget.Toolbar>
 

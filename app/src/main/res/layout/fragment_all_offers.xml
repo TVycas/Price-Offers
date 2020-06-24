@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:iconifiedByDefault="false"
             android:layout_weight="50"
-            android:queryHint="@string/look_for_offer" />
+            android:queryHint="@string/search_view_hint" />
 
         <Spinner
             android:id="@+id/filters_spinner"
