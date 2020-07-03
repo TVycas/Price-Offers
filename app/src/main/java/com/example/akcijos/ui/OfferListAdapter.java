@@ -22,14 +22,22 @@ import java.util.List;
 class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHolder> implements Filterable {
 
     private final LayoutInflater inflater;
+    /**
+     * A CheckedChangeListener to notify that an offer was selected
+     */
     private CheckedChangeListener checkedListener;
+    /**
+     * List of offers after filtering to be displayed
+     */
     private List<Offer> displayedOffers;
+    /**
+     * All of the offers available to display
+     */
     private List<Offer> allOffers;
 
-    OfferListAdapter(Context context) {
-        inflater = LayoutInflater.from(context);
-    }
-
+    /**
+     * An offers filter which given a char sequence, filters the offers based on their title containing the char sequence
+     */
     private Filter offersFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -55,11 +63,16 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
+            // Update the displayed offers and refresh the recyclerView
             displayedOffers.clear();
             displayedOffers.addAll((List) results.values);
             notifyDataSetChanged();
         }
     };
+
+    OfferListAdapter(Context context) {
+        inflater = LayoutInflater.from(context);
+    }
 
     void setDisplayedOffers(List<Offer> offers, boolean shouldUpdateDataSetChanged) {
         if (offers != null) {
@@ -87,6 +100,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             Offer current = displayedOffers.get(position);
             holder.offerTitleItemView.setText(current.getTITLE());
 
+            // Display different information based on what is available
             if (current.getPRICE() == -1) {
                 holder.offerPriceItemView.setText(holder.itemView.getContext().getString(R.string.percentage, current.getPERCENTAGE()));
             } else if (current.getPERCENTAGE() != -1) {
@@ -105,6 +119,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
                     checkedListener.onCheckedChanged(buttonView, isChecked, position);
                 }
             });
+
         } else {
             // Covers the case of data not being ready yet.
             holder.offerTitleItemView.setText(R.string.no_offers_available);
@@ -144,9 +159,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
     }
 
     public interface CheckedChangeListener {
-
         void onCheckedChanged(CompoundButton view, boolean isChecked, int position);
-
     }
 
     static class OfferViewHolder extends RecyclerView.ViewHolder {
@@ -158,6 +171,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
 
         OfferViewHolder(@NonNull View itemView) {
             super(itemView);
+            // Find the views to be set
             offerTitleItemView = itemView.findViewById(R.id.offer_title_textview);
             offerPriceItemView = itemView.findViewById(R.id.offer_price_textview);
             offerShopName = itemView.findViewById(R.id.shop_name);

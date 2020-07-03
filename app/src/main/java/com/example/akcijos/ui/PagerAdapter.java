@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+/**
+ * A simple {@link FragmentPagerAdapter} for switching between the two fragments of the UI
+ */
 public class PagerAdapter extends FragmentPagerAdapter {
     private int numOfTabs;
 

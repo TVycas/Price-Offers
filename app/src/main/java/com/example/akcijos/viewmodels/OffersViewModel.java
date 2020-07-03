@@ -13,13 +13,16 @@ import com.example.akcijos.repositories.OffersRepository;
 
 import java.util.List;
 
-public class MainActivityViewModel extends AndroidViewModel {
+/**
+ * A view model responsible for providing the information on the offers
+ */
+public class OffersViewModel extends AndroidViewModel {
 
     private OffersRepository repo;
     private LiveData<List<Offer>> selectedOffers;
     private MutableLiveData<Integer> filterID = new MutableLiveData<>(0);
 
-    public MainActivityViewModel(@NonNull Application application) {
+    public OffersViewModel(@NonNull Application application) {
         super(application);
         repo = new OffersRepository(application);
         selectedOffers = repo.getSelectedOffers();
@@ -33,15 +36,24 @@ public class MainActivityViewModel extends AndroidViewModel {
         repo.refreshDatabase();
     }
 
+    /**
+     * Transform the LiveData for the all offers list  to be based on the filter id selected by the user
+     *
+     * @return An offer list encapsulated in LiveDate object
+     */
     public LiveData<List<Offer>> getAllOffers() {
         return Transformations.switchMap(filterID, filterID -> repo.filterOffers(filterID));
     }
 
-    public LiveData<List<Offer>> getSelectedOffers() {
-        return selectedOffers;
-    }
-
+    /**
+     * Update the filterID LiveData
+     * @param filterSelection The index of the filter value the user selected
+     */
     public void filterOffers(int filterSelection) {
         filterID.setValue(filterSelection);
+    }
+
+    public LiveData<List<Offer>> getSelectedOffers() {
+        return selectedOffers;
     }
 }

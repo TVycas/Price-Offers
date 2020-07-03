@@ -14,14 +14,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.akcijos.R;
-import com.example.akcijos.viewmodels.MainActivityViewModel;
+import com.example.akcijos.viewmodels.OffersViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Calendar;
 
+/**
+ * The main activity to set up the toolbar and the viewPager
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private MainActivityViewModel viewModel;
+    private OffersViewModel viewModel;
     private SharedPreferences sharedPref;
 
     @Override
@@ -66,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
         updateLastRefreshedTextView();
 
-//        // Subscribe to the view model
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
+        // Subscribe to the view model
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(OffersViewModel.class);
     }
 
     /**

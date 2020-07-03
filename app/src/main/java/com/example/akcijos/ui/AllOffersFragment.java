@@ -18,16 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.akcijos.R;
 import com.example.akcijos.database.Offer;
-import com.example.akcijos.viewmodels.MainActivityViewModel;
+import com.example.akcijos.viewmodels.OffersViewModel;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * {@link Fragment} subclass.
  */
 public class AllOffersFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = AllOffersFragment.class.getName();
-    private MainActivityViewModel viewModel;
+    private OffersViewModel viewModel;
     /**
      * Variable used to store the query text in case of filter changes
      */
@@ -55,7 +55,7 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
         recyclerView.setAdapter(offerListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Get the offer object that was selected by the user and update the database to store the new selection value
+        // Get the offer object that was selected by the user and update the database to mark the object as selected
         offerListAdapter.setOnCheckedChangedListener((view, isChecked, position) -> {
             Offer offer = offerListAdapter.getOfferAtPosition(position);
             Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
@@ -64,10 +64,11 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
 
         });
 
-        // Observe ViewModel
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(MainActivityViewModel.class);
+        // Observe ViewModel to display the list of offers
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(OffersViewModel.class);
         viewModel.getAllOffers().observe(this, offers -> {
             if (offers.size() != 0) {
+                // Stop the progress circle
                 getActivity().findViewById(R.id.progress_circular).setVisibility(View.GONE);
             }
 
@@ -107,10 +108,12 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // When the user changes the filter setting, notify the viewModel to give a different livedata object based on the filter value
         viewModel.filterOffers(position);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+        /* no-op */
     }
 }
