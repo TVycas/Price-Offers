@@ -33,7 +33,7 @@ public class WebScrapingControl {
     private final OffersRepository repo;
     private JavaScriptInterface javaScriptInterface = new JavaScriptInterface();
 
-    private ArrayList<Offer> offers = new ArrayList<>();
+    private ArrayList<Offer> allOffers = new ArrayList<>();
 
     private boolean[] finishedIkiScrapers = new boolean[2];
     private boolean maximaScrapeFinished;
@@ -124,7 +124,7 @@ public class WebScrapingControl {
                             value -> {
                                 // Scraping finished so we can add the offers to the local offers list
                                 // No race conditions can happen because this code is executed on the main thread
-                                offers.addAll(javaScriptInterface.getMaximaOffers());
+                                allOffers.addAll(javaScriptInterface.getMaximaOffers());
                                 maximaScrapeFinished = true;
                                 tryToInsertOffers();
                             });
@@ -134,7 +134,6 @@ public class WebScrapingControl {
 
         Log.d(TAG, "Maxima scraping starting");
         wv.loadUrl(MAXIMA_URL);
-
     }
 
     /**
@@ -145,7 +144,7 @@ public class WebScrapingControl {
         Log.d(TAG, "tryToInsertOffers: trying to insert offers. Maxima finished = " + maximaScrapeFinished +
                 "; iki finished = " + ikiScrapeFinished + "; Lidl finished = " + lidlScrapeFinished);
         if (maximaScrapeFinished && ikiScrapeFinished && lidlScrapeFinished) {
-            repo.insert(offers);
+            repo.insert(allOffers);
         }
     }
 
@@ -177,7 +176,7 @@ public class WebScrapingControl {
 
             @Override
             public void taskCompleted(List<Offer> ikiOffers) {
-                offers.addAll(ikiOffers);
+                allOffers.addAll(ikiOffers);
 
                 // Check if we need to insert the offers.
                 if (checkOtherIkiScraperFinished()) {
@@ -193,7 +192,7 @@ public class WebScrapingControl {
 
             @Override
             public void taskCompleted(List<Offer> lidlOffers) {
-                offers.addAll(lidlOffers);
+                allOffers.addAll(lidlOffers);
 
                 lidlScrapeFinished = true;
                 tryToInsertOffers();
