@@ -14,7 +14,6 @@ import java.util.ArrayList;
 abstract class Scraper {
     /**
      * Method controlling the main scraping logic. It gets the Jsoup Document and scrapes a list of offer object from it
-     *
      * @return An ArrayList of offer objects
      */
     ArrayList<Offer> scrapeOffers() {

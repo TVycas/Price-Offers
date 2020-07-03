@@ -7,20 +7,29 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "offer_table")
 public class Offer {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    /**
+     * The percentage of discount of the offer
+     */
+    private final int PERCENTAGE;
 
     @NonNull
     private final String TITLE;
-
-    private final int PERCENTAGE;
-
-    private final double PRICE;
-
+    /**
+     * A String containing a link to the image file
+     */
     private final String IMG;
 
-    private final String SHOP_NAME;
+    private final double PRICE;
+    /**
+     * We use integer ids as primary keys because some offers from different shops could have the same name
+     */
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
+    private final String SHOP_NAME;
+    /**
+     * A variable storing whether or not the this offer is selected by the user
+     */
     private boolean isSelected;
 
     public Offer(@NonNull String TITLE, int PERCENTAGE, double PRICE, String IMG, String SHOP_NAME) {
