@@ -15,7 +15,6 @@ class MaximaScraper extends Scraper {
         this.html = html;
     }
 
-
     @Override
     String getShopName() {
         return SHOP_NAME;
