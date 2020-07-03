@@ -6,12 +6,6 @@ import android.util.Log;
 import com.example.akcijos.database.Offer;
 import com.example.akcijos.repositories.OffersRepository;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,29 +23,8 @@ public class AsyncScrapeTask extends AsyncTask<Void, Void, List<Offer>> {
     @Override
     protected List<Offer> doInBackground(Void... voids) {
         Log.d(TAG, scraper.getShopName() + " scraping started");
-        ArrayList<Offer> offers = new ArrayList<>();
 
-        Document doc;
-        try {
-            doc = Jsoup.connect(scraper.getOffersUrl()).get();
-            Elements elems = doc.getElementsByClass(scraper.getOffersContainer());
-
-            for (Element e : elems) {
-                if (scraper.isOffer(e)) {
-
-                    String title = scraper.getTitle(e);
-                    double price = scraper.getPrice(e);
-                    int percentage = scraper.getPercentage(e, price);
-                    String img = scraper.getImg(e);
-
-                    offers.add(new Offer(title, percentage, price, img, scraper.getShopName()));
-                }
-            }
-
-        } catch (IOException e) {
-            Log.e(TAG, "doInBackground: " + scraper.getShopName() + " offers scraping failed");
-            e.printStackTrace();
-        }
+        ArrayList<Offer> offers = scraper.scrapeOffers();
 
         Log.d(TAG, "doInBackground: " + scraper.getShopName() + " scraping finished, loaded " + offers.size() + " offers.");
 

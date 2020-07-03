@@ -1,9 +1,13 @@
 package com.example.akcijos.scrapers;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class LidlScraper implements Scraper {
+import java.io.IOException;
+
+public class LidlScraper extends Scraper {
 
     private final String OFFERS_CONTAINER_CLASSNAME = "col col--sm-4 col--xs-6";
     private final String SHOP_NAME = "Lidl";
@@ -14,13 +18,18 @@ public class LidlScraper implements Scraper {
     }
 
     @Override
-    public String getOffersUrl() {
-        return LIDL_URL;
+    public String getShopName() {
+        return SHOP_NAME;
     }
 
     @Override
-    public String getShopName() {
-        return SHOP_NAME;
+    Document getDocument() {
+        try {
+            return Jsoup.connect(LIDL_URL).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

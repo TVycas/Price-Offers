@@ -1,70 +1,48 @@
 package com.example.akcijos.scrapers;
 
-import android.util.Log;
-
-import com.example.akcijos.database.Offer;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
+class MaximaScraper extends Scraper {
 
-class MaximaScraper {
-
-    private static final String TAG = MaximaScraper.class.getName();
     private final String html;
+    private final String OFFERS_CONTAINER_CLASSNAME = "col-third";
+    private final String SHOP_NAME = "Maxima";
 
     MaximaScraper(String html) {
         this.html = html;
     }
 
-    ArrayList<Offer> scrapeOffers() {
-        Log.d(TAG, "Maxima scraping started");
-        Document doc = Jsoup.parse(html);
 
-        Elements elems = doc.getElementsByClass("col-third");
-        ArrayList<Offer> offers = new ArrayList<>();
-
-        for (Element e : elems) {
-            String title = e.getElementsByClass("title").text();
-            double price = getPrice(e);
-            int percentage = getPercentage(e);
-            String img = getImageLink(e);
-
-            offers.add(new Offer(title, percentage, price, img, "Maxima"));
-        }
-
-        Log.d(TAG, "scrapeOffers: Maxima scraping finished, loaded " + offers.size() + " offers.");
-
-        return offers;
+    @Override
+    String getShopName() {
+        return SHOP_NAME;
     }
 
-    private String getImageLink(Element e) {
-        String img = "";
-        String imgHtml = e.getElementsByClass("img").get(0).html();
-        if (imgHtml.contains("src=")) {
-            img = "https://www.maxima.lt" + imgHtml.substring(imgHtml.indexOf("src=") + 5, imgHtml.length() - 2);
-        }
-        return img;
+    @Override
+    Document getDocument() {
+        return Jsoup.parse(html);
     }
 
-    private int getPercentage(Element e) {
-        int percentage = -1;
-        Elements percentageElems = e.getElementsByClass("discount percents");
-        if (percentageElems.size() != 0) {
-            try {
-                percentage = Integer.parseInt(percentageElems.get(0).getElementsByClass("value").text());
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        return percentage;
+    @Override
+    String getOffersContainer() {
+        return OFFERS_CONTAINER_CLASSNAME;
     }
 
-    private double getPrice(Element e) {
+    @Override
+    boolean isOffer(Element e) {
+        return true;
+    }
+
+    @Override
+    String getTitle(Element e) {
+        return e.getElementsByClass("title").text();
+    }
+
+    @Override
+    double getPrice(Element e) {
         double price = -1;
         Elements priceElems = e.getElementsByClass("t1");
 
@@ -79,6 +57,31 @@ class MaximaScraper {
         }
 
         return price;
+    }
+
+    @Override
+    int getPercentage(Element e, double price) {
+        int percentage = -1;
+        Elements percentageElems = e.getElementsByClass("discount percents");
+        if (percentageElems.size() != 0) {
+            try {
+                percentage = Integer.parseInt(percentageElems.get(0).getElementsByClass("value").text());
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return percentage;
+    }
+
+    @Override
+    String getImg(Element e) {
+        String img = "";
+        String imgHtml = e.getElementsByClass("img").get(0).html();
+        if (imgHtml.contains("src=")) {
+            img = "https://www.maxima.lt" + imgHtml.substring(imgHtml.indexOf("src=") + 5, imgHtml.length() - 2);
+        }
+        return img;
     }
 
 }
