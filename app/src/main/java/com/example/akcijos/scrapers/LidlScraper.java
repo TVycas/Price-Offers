@@ -30,7 +30,7 @@ public class LidlScraper implements Scraper {
 
     @Override
     public boolean isOffer(Element e) {
-        return e.getElementsByClass("product__title").size() != 0;
+        return e.getElementsByClass("pricebox pricebox--highlight-offer pricebox--negative").size() != 0;
     }
 
     @Override

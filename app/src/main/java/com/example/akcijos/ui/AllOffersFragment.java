@@ -28,6 +28,9 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
 
     private static final String TAG = AllOffersFragment.class.getName();
     private MainActivityViewModel viewModel;
+    /**
+     * Variable used to store the query text in case of filter changes
+     */
     private String queryText = "";
 
     public AllOffersFragment() {

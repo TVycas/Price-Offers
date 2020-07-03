@@ -66,10 +66,14 @@ public class IkiScraper implements Scraper {
         // No price info, just the percentage
         if (priceCents.size() == 0) {
             Elements percentageElems = e.getElementsByClass("price-main");
+            String percentageString = percentageElems.get(0).text();
             try {
-                String percentageString = percentageElems.get(0).text();
-                percentage = Integer.parseInt(percentageString.substring(1, percentageString.length() - 1));
-            } catch (NumberFormatException ex) {
+                if (percentageString.contains("iki")) {
+                    percentage = Integer.parseInt(percentageString.substring(5, percentageString.length() - 1));
+                } else {
+                    percentage = Integer.parseInt(percentageString.substring(1, percentageString.length() - 1));
+                }
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
             // Percentage is written at the top bar, above the price

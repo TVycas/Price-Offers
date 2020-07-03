@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         final PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
 
-        // Setting a listener for tab changes.
+        // Set a listener for tab changes.
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -64,26 +64,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        updateLastRefreshTextView();
+        updateLastRefreshedTextView();
 
+//        // Subscribe to the view model
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(MainActivityViewModel.class);
-        viewModel.getAllOffers().observe(this, offers -> updateLastRefreshTextView());
-
     }
 
-    // Update the last refreshed text view to show when was the last offer refresh
-    private void updateLastRefreshTextView() {
+    /**
+     * Updates the last refreshed text view (next to the refresh button) to display
+     * the number of days since the last refresh of the offers.
+     */
+    private void updateLastRefreshedTextView() {
         TextView lastRefreshedTextView = findViewById(R.id.last_refreshed);
 
         // Get stored time of last refresh
         sharedPref = getPreferences(Context.MODE_PRIVATE);
-        Long lastRefreshedDate = sharedPref.getLong(getString(R.string.last_refresh_key_id), 0);
+        long lastRefreshedDate = sharedPref.getLong(getString(R.string.last_refresh_key_id), 0);
 
         // Update the TextView based on the returned value
         if (lastRefreshedDate != 0) {
-            Long currentTime = Calendar.getInstance().getTimeInMillis();
-            long timeDifference = currentTime - lastRefreshedDate;
-            int days = (int) (timeDifference / (1000 * 60 * 60 * 24));
+            int days = getDaysFromMillis(lastRefreshedDate);
 
             if (days == 0) {
                 lastRefreshedTextView.setText(getString(R.string.last_refresh_today));
@@ -92,25 +92,36 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 lastRefreshedTextView.setText(getString(R.string.last_refreshed_multi_days, days));
             }
-
         } else {
             lastRefreshedTextView.setText(getString(R.string.last_refresh_never));
         }
+    }
 
+    /**
+     * Calculate number of days from milliseconds
+     *
+     * @param millis Time expressed in milliseconds
+     * @return Milliseconds converted to days
+     */
+    private int getDaysFromMillis(Long millis) {
+        Long currentTime = Calendar.getInstance().getTimeInMillis();
+        long timeDifference = currentTime - millis;
+        return (int) (timeDifference / (1000 * 60 * 60 * 24));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.refresh_offers) {// User chose the "Refresh Offers" item, running the scraping
-
-            // Save the offers refresh date
+        // User chose the "Refresh Offers" item
+        if (item.getItemId() == R.id.refresh_offers) {
+            // Save the refresh time in milliseconds
             long date = Calendar.getInstance().getTimeInMillis();
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putLong(getString(R.string.last_refresh_key_id), date);
             editor.apply();
 
             refreshDatabase();
+
+            updateLastRefreshedTextView();
             return true;
         }
         // If we got here, the user's action was not recognized.
@@ -118,6 +129,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Refresh the database using the view model and show a circular progress indicator
+     */
     private void refreshDatabase() {
         viewModel.refreshDatabase();
         findViewById(R.id.progress_circular).setVisibility(View.VISIBLE);
@@ -125,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu
         getMenuInflater().inflate(R.menu.menu_items, menu);
         return super.onCreateOptionsMenu(menu);
     }

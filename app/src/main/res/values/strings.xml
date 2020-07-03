@@ -1,4 +1,5 @@
 <resources>
+    <!--    TODO what should the name be in English?-->
     <string name="app_name">Akcijos</string>
 
     <!--    Recycler view item text-->
