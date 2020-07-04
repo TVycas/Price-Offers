@@ -42,13 +42,15 @@ public class UserCartFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_user_cart, container, false);
     }
 
+    //TODO add a filter option
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // Set up the RecyclerView.
         RecyclerView recyclerView = getView().findViewById(R.id.user_cart_recyclerview);
-        final OfferListAdapter cartListAdapter = new OfferListAdapter(getContext());
+        final OfferListAdapter cartListAdapter = new OfferListAdapter(getContext(), recyclerView);
         recyclerView.setAdapter(cartListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

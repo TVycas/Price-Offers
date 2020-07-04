@@ -51,7 +51,7 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
 
         // Set up the RecyclerView.
         RecyclerView recyclerView = getView().findViewById(R.id.all_offers_recyclerview);
-        final OfferListAdapter offerListAdapter = new OfferListAdapter(getContext());
+        final OfferListAdapter offerListAdapter = new OfferListAdapter(getContext(), recyclerView);
         recyclerView.setAdapter(offerListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

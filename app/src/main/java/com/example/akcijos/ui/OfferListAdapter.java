@@ -35,6 +35,8 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
      */
     private List<Offer> allOffers;
 
+    private RecyclerView recyclerView;
+
     /**
      * An offers filter which given a char sequence, filters the offers based on their title containing the char sequence
      */
@@ -66,12 +68,13 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             // Update the displayed offers and refresh the recyclerView
             displayedOffers.clear();
             displayedOffers.addAll((List) results.values);
-            notifyDataSetChanged();
+            updateRecyclerView();
         }
     };
 
-    OfferListAdapter(Context context) {
+    OfferListAdapter(Context context, RecyclerView recyclerView) {
         inflater = LayoutInflater.from(context);
+        this.recyclerView = recyclerView;
     }
 
     void setDisplayedOffers(List<Offer> offers, boolean shouldUpdateDataSetChanged) {
@@ -81,9 +84,17 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             allOffers = new ArrayList<>(offers);
 
             if (shouldUpdateDataSetChanged) {
-                notifyDataSetChanged();
+                updateRecyclerView();
             }
         }
+    }
+
+    /**
+     * Calls notifyDataSetChanged() to update the recycler view items and sets the scroll position to the top
+     */
+    private void updateRecyclerView() {
+        notifyDataSetChanged();
+        recyclerView.scrollToPosition(0);
     }
 
     @NonNull
