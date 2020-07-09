@@ -27,13 +27,13 @@ public interface OfferDao {
     @Query("SELECT * FROM offer_table ORDER BY PERCENTAGE ASC")
     LiveData<List<Offer>> getAllOffersByDiscountLowToHigh();
 
-    @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Iki'")
+    @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Iki' ORDER BY PERCENTAGE DESC")
     LiveData<List<Offer>> getAllIkiOffers();
 
-    @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Maxima'")
+    @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Maxima' ORDER BY PERCENTAGE DESC")
     LiveData<List<Offer>> getAllMaximaOffers();
 
-    @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Lidl'")
+    @Query("SELECT * FROM offer_table WHERE SHOP_NAME = 'Lidl' ORDER BY PERCENTAGE DESC")
     LiveData<List<Offer>> getAllLidlOffers();
 
     @Update
