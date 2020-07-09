@@ -17,10 +17,6 @@ import com.example.akcijos.R;
 import com.example.akcijos.database.Offer;
 import com.example.akcijos.viewmodels.OffersViewModel;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 /**
  * {@link Fragment} subclass.
@@ -62,73 +58,17 @@ public class UserCartFragment extends Fragment {
             viewModel.updateOffer(offer);
         });
 
+        TextView selectionInfoTextView = getView().findViewById(R.id.selection_info);
+
         // Observe ViewModel
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(OffersViewModel.class);
         // Update the cart as soon as the database changes.
         viewModel.getSelectedOffers().observe(this, offers -> {
             cartListAdapter.setDisplayedOffers(offers, true);
-            setSelectionInfo(offers);
         });
+
+        // Update the selection info TextView if selections change
+        viewModel.getUserSelectionInfo().observe(this, userSelectionInfo -> selectionInfoTextView.setText(userSelectionInfo));
     }
 
-    /**
-     * Set the bottom text view to display information about the user selection - how many offers were selected for each shop
-     *
-     * @param offers the list off all user selected offers
-     */
-    private void setSelectionInfo(List<Offer> offers) {
-        TextView selectionInfoTextView = getView().findViewById(R.id.selection_info);
-
-        Map<String, Integer> offerShopsCount = getShopCountMap(offers);
-
-        String selectionInfo = constructSelectionInfoString(offerShopsCount);
-
-        selectionInfoTextView.setText(selectionInfo);
-    }
-
-    // TODO extract to the view model?
-
-    /**
-     * Creates a string to describe the user selection information. Tells how many items were selected from each shop.
-     *
-     * @param offerShopsCount A String - Integer map where String is the shop and Integer is the number of offers from that shop
-     * @return String describing the user selection information.
-     */
-    private String constructSelectionInfoString(Map<String, Integer> offerShopsCount) {
-        StringBuilder selectionInfo;
-
-        if (offerShopsCount.keySet().size() != 0) {
-            selectionInfo = new StringBuilder(getString(R.string.shop_selection_start));
-            for (String shopName : offerShopsCount.keySet()) {
-                selectionInfo.append(shopName)
-                        .append(" (")
-                        .append(offerShopsCount.get(shopName))
-                        .append("), ");
-            }
-            selectionInfo = new StringBuilder(selectionInfo.substring(0, selectionInfo.length() - 2) + ".");
-        } else {
-            selectionInfo = new StringBuilder(getString(R.string.shop_selection_no_shops));
-        }
-        return selectionInfo.toString();
-    }
-
-    /**
-     * A helper method to create a < Shop name, Offers from that shop > map
-     *
-     * @param offers List of selected offers
-     * @return Map describing the user selections
-     */
-    private Map<String, Integer> getShopCountMap(List<Offer> offers) {
-        Map<String, Integer> offerShopsCount = new HashMap<>();
-
-        for (Offer offer : offers) {
-            String shopName = offer.getSHOP_NAME();
-            if (!offerShopsCount.containsKey(shopName)) {
-                offerShopsCount.put(shopName, 1);
-            } else {
-                offerShopsCount.put(shopName, offerShopsCount.get(shopName) + 1);
-            }
-        }
-        return offerShopsCount;
-    }
 }
