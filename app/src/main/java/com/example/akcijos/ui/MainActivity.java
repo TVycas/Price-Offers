@@ -17,6 +17,7 @@ import com.example.akcijos.R;
 import com.example.akcijos.viewmodels.OffersViewModel;
 import com.google.android.material.tabs.TabLayout;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
 /**
@@ -24,6 +25,7 @@ import java.util.Calendar;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getName();
     private OffersViewModel viewModel;
     private SharedPreferences sharedPref;
 
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Update the TextView based on the returned value
         if (lastRefreshedDate != 0) {
-            int days = getDaysFromMillis(lastRefreshedDate);
+            int days = getDaysBetween(lastRefreshedDate);
 
             if (days == 0) {
                 lastRefreshedTextView.setText(getString(R.string.last_refresh_today));
@@ -100,31 +102,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private int getDaysBetween(long lastRefreshedDate) {
+        Calendar todayCal = Calendar.getInstance();
+        Calendar previousCal = Calendar.getInstance();
+        previousCal.setTimeInMillis(lastRefreshedDate);
+
+        return (int) ChronoUnit.DAYS.between(previousCal.toInstant(), todayCal.toInstant());
+    }
+
     /**
-     * Calculate number of days from milliseconds
-     *
-     * @param millis Time expressed in milliseconds
-     * @return Milliseconds converted to days
+     * Save the date of offer refresh in milliseconds
      */
-    private int getDaysFromMillis(Long millis) {
-        Long currentTime = Calendar.getInstance().getTimeInMillis();
-        long timeDifference = currentTime - millis;
-        return (int) (timeDifference / (1000 * 60 * 60 * 24));
+    private void saveRefreshDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+
+        long date = cal.getTimeInMillis();
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(getString(R.string.last_refresh_key_id), date);
+        editor.apply();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // User chose the "Refresh Offers" item
         if (item.getItemId() == R.id.refresh_offers) {
-            // Save the refresh time in milliseconds
-            long date = Calendar.getInstance().getTimeInMillis();
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putLong(getString(R.string.last_refresh_key_id), date);
-            editor.apply();
-
-            refreshDatabase();
-
+            saveRefreshDate();
             updateLastRefreshedTextView();
+            refreshDatabase();
             return true;
         }
         // If we got here, the user's action was not recognized.
