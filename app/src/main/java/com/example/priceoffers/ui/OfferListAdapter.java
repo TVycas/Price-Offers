@@ -1,4 +1,4 @@
-package com.example.akcijos.ui;
+package com.example.priceoffers.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,8 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.akcijos.R;
-import com.example.akcijos.database.Offer;
+import com.example.priceoffers.R;
+import com.example.priceoffers.database.Offer;
 
 import java.util.ArrayList;
 import java.util.List;

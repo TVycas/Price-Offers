@@ -1,4 +1,4 @@
-package com.example.akcijos.scrapers;
+package com.example.priceoffers.scrapers;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,9 +10,9 @@ import android.webkit.WebViewClient;
 
 import androidx.annotation.Nullable;
 
-import com.example.akcijos.R;
-import com.example.akcijos.database.Offer;
-import com.example.akcijos.repositories.OffersRepository;
+import com.example.priceoffers.R;
+import com.example.priceoffers.database.Offer;
+import com.example.priceoffers.repositories.OffersRepository;
 
 import java.util.ArrayList;
 import java.util.List;

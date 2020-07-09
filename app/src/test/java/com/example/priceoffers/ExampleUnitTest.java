@@ -1,4 +1,4 @@
-package com.example.akcijos;
+package com.example.priceoffers;
 
 import org.junit.Test;
 

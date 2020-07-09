@@ -1,10 +1,10 @@
-package com.example.akcijos.scrapers;
+package com.example.priceoffers.scrapers;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.akcijos.database.Offer;
-import com.example.akcijos.repositories.OffersRepository;
+import com.example.priceoffers.database.Offer;
+import com.example.priceoffers.repositories.OffersRepository;
 
 import java.util.ArrayList;
 import java.util.List;

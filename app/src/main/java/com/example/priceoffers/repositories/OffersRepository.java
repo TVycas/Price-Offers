@@ -1,4 +1,4 @@
-package com.example.akcijos.repositories;
+package com.example.priceoffers.repositories;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -6,10 +6,10 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.akcijos.database.Offer;
-import com.example.akcijos.database.OfferDao;
-import com.example.akcijos.database.OfferRoomDatabase;
-import com.example.akcijos.scrapers.WebScrapingControl;
+import com.example.priceoffers.database.Offer;
+import com.example.priceoffers.database.OfferDao;
+import com.example.priceoffers.database.OfferRoomDatabase;
+import com.example.priceoffers.scrapers.WebScrapingControl;
 
 import java.util.List;
 

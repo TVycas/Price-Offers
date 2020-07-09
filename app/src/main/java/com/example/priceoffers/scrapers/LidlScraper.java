@@ -1,4 +1,4 @@
-package com.example.akcijos.scrapers;
+package com.example.priceoffers.scrapers;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

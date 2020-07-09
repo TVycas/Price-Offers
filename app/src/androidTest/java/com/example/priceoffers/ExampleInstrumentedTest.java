@@ -1,4 +1,4 @@
-package com.example.akcijos;
+package com.example.priceoffers;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.vewviewtests", appContext.getPackageName());
+        assertEquals("com.example.priceoffers", appContext.getPackageName());
     }
 }

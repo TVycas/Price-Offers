@@ -1,4 +1,4 @@
-package com.example.akcijos.ui;
+package com.example.priceoffers.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,8 +13,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.akcijos.R;
-import com.example.akcijos.viewmodels.OffersViewModel;
+import com.example.priceoffers.R;
+import com.example.priceoffers.viewmodels.OffersViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 import java.time.temporal.ChronoUnit;

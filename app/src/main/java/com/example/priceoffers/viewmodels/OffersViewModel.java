@@ -1,4 +1,4 @@
-package com.example.akcijos.viewmodels;
+package com.example.priceoffers.viewmodels;
 
 import android.app.Application;
 
@@ -8,9 +8,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-import com.example.akcijos.R;
-import com.example.akcijos.database.Offer;
-import com.example.akcijos.repositories.OffersRepository;
+import com.example.priceoffers.R;
+import com.example.priceoffers.database.Offer;
+import com.example.priceoffers.repositories.OffersRepository;
 
 import java.util.HashMap;
 import java.util.List;

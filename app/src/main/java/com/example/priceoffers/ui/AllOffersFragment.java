@@ -1,4 +1,4 @@
-package com.example.akcijos.ui;
+package com.example.priceoffers.ui;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +16,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.akcijos.R;
-import com.example.akcijos.database.Offer;
-import com.example.akcijos.viewmodels.OffersViewModel;
+import com.example.priceoffers.R;
+import com.example.priceoffers.database.Offer;
+import com.example.priceoffers.viewmodels.OffersViewModel;
 
 
 /**

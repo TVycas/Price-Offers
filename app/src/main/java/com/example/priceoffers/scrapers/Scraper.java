@@ -1,6 +1,6 @@
-package com.example.akcijos.scrapers;
+package com.example.priceoffers.scrapers;
 
-import com.example.akcijos.database.Offer;
+import com.example.priceoffers.database.Offer;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
