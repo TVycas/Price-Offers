@@ -64,7 +64,7 @@ public class UserCartFragment extends Fragment {
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(OffersViewModel.class);
         // Update the cart as soon as the database changes.
         viewModel.getSelectedOffers().observe(this, offers -> {
-            cartListAdapter.setDisplayedOffers(offers, true);
+            cartListAdapter.setDisplayedOffers(offers, true, true);
         });
 
         // Update the selection info TextView if selections change

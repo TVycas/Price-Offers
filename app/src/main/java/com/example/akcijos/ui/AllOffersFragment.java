@@ -28,11 +28,12 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
 
     private static final String TAG = AllOffersFragment.class.getName();
     private OffersViewModel viewModel;
+
+    private boolean userSelectedOffer = false;
     /**
      * Variable used to store the query text in case of filter changes
      */
     private String queryText = "";
-    private boolean filterChanged = false;
 
     public AllOffersFragment() {
         // Required empty public constructor
@@ -61,6 +62,7 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
             Offer offer = offerListAdapter.getOfferAtPosition(position);
             Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
             offer.setIsSelected(isChecked);
+            userSelectedOffer = true;
             viewModel.updateOffer(offer);
         });
 
@@ -72,15 +74,22 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
                 getActivity().findViewById(R.id.progress_circular).setVisibility(View.GONE);
             }
 
-            if (!queryText.equals("")) {
-                // Don't update the dataSetChanged because it will update after filtering
-                offerListAdapter.setDisplayedOffers(offers, false);
+            // Multiple settings for list update control
+            if (userSelectedOffer && queryText.equals("")) {
+                // User selected an offer
+                offerListAdapter.setDisplayedOffers(offers, false, true);
+                userSelectedOffer = false;
+            } else if (userSelectedOffer) {
+                // User selected and offer while searching for offers
+                offerListAdapter.setDisplayedOffers(offers, false, false);
                 offerListAdapter.getFilter().filter(queryText);
-            } else if (filterChanged) {
-                offerListAdapter.setDisplayedOffers(offers, true);
-                filterChanged = false;
+                userSelectedOffer = false;
+            } else if (!queryText.equals("")) {
+                // User is searching of offers
+                offerListAdapter.setDisplayedOffers(offers, true, false);
+                offerListAdapter.getFilter().filter(queryText);
             } else {
-                offerListAdapter.setDisplayedOffers(offers, false);
+                offerListAdapter.setDisplayedOffers(offers, true, true);
             }
         });
 
@@ -89,6 +98,9 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if (!queryText.equals(""))
+                    offerListAdapter.getFilter().filter(queryText);
+
                 return false;
             }
 
@@ -111,13 +123,10 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // When the user changes the filter setting, notify the viewModel to give a different livedata object based on the filter value
-        filterChanged = true;
+        // When the user changes the filter setting, notify the viewModel to give a different LiveData object based on the filter value
         viewModel.filterOffers(position);
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        /* no-op */
-    }
+    public void onNothingSelected(AdapterView<?> parent) { /* no-op */ }
 }

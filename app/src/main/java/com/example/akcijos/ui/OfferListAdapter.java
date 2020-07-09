@@ -35,7 +35,12 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
      */
     private List<Offer> allOffers;
 
+    /**
+     * A flag for deciding whether to move the list to top position after the data has changed
+     */
+    private boolean shouldMoveListToTop = true;
     private RecyclerView recyclerView;
+
 
     /**
      * An offers filter which given a char sequence, filters the offers based on their title containing the char sequence
@@ -68,7 +73,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
             // Update the displayed offers and refresh the recyclerView
             displayedOffers.clear();
             displayedOffers.addAll((List) results.values);
-            updateRecyclerView();
+            notifyDataChangedControl();
         }
     };
 
@@ -77,24 +82,30 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         this.recyclerView = recyclerView;
     }
 
-    void setDisplayedOffers(List<Offer> offers, boolean shouldUpdateDataSetChanged) {
+    void setDisplayedOffers(List<Offer> offers, boolean shouldMoveListToTop, boolean shouldNotifyDataChanged) {
         if (offers != null) {
             // Make lists for storing and displaying the offers
             displayedOffers = offers;
             allOffers = new ArrayList<>(offers);
 
-            if (shouldUpdateDataSetChanged) {
-                updateRecyclerView();
+            this.shouldMoveListToTop = shouldMoveListToTop;
+            if (shouldNotifyDataChanged) {
+                notifyDataChangedControl();
             }
         }
     }
 
     /**
-     * Calls notifyDataSetChanged() to update the recycler view items and sets the scroll position to the top
+     * Helper method for notifying that the data has changed and moving or not moving the list to the top
      */
-    private void updateRecyclerView() {
-        notifyDataSetChanged();
-        recyclerView.scrollToPosition(0);
+    private void notifyDataChangedControl() {
+        if (shouldMoveListToTop) {
+            notifyDataSetChanged();
+            recyclerView.scrollToPosition(0);
+        } else {
+            notifyDataSetChanged();
+        }
+        shouldMoveListToTop = true;
     }
 
     @NonNull
