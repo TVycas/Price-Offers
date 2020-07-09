@@ -32,6 +32,7 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
      * Variable used to store the query text in case of filter changes
      */
     private String queryText = "";
+    private boolean filterChanged = false;
 
     public AllOffersFragment() {
         // Required empty public constructor
@@ -61,7 +62,6 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
             Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
             offer.setIsSelected(isChecked);
             viewModel.updateOffer(offer);
-
         });
 
         // Observe ViewModel to display the list of offers
@@ -76,8 +76,11 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
                 // Don't update the dataSetChanged because it will update after filtering
                 offerListAdapter.setDisplayedOffers(offers, false);
                 offerListAdapter.getFilter().filter(queryText);
-            } else {
+            } else if (filterChanged) {
                 offerListAdapter.setDisplayedOffers(offers, true);
+                filterChanged = false;
+            } else {
+                offerListAdapter.setDisplayedOffers(offers, false);
             }
         });
 
@@ -109,6 +112,7 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // When the user changes the filter setting, notify the viewModel to give a different livedata object based on the filter value
+        filterChanged = true;
         viewModel.filterOffers(position);
     }
 
