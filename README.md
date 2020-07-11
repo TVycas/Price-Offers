@@ -1,17 +1,10 @@
 # Price-Offers
 
-An Android app for quick and simple look up of various price offers for
-three Lithuanian supermarkets - Maxima, Iki and Lidl.
+An Android app for a quick and straightforward lookup of various price offers for three Lithuanian supermarkets - Maxima, Iki, and Lidl.
 
-The users are able to sort the offers in multiple categories, search for
-a specific offer and select the offers that they wish to save for future
-reference.
+The users can sort the offers in multiple categories, search for a specific offer, and select the offers they wish to save for future reference.
 
-The app uses web scraping using [jsoup](https://jsoup.org/) and Android
-WebView objects to asynchronously scrape the latest price offers from
-the websites of the supermarkets. It stores the data with Room database
-and updates the RecyclerView using Android LiveData objects. The app
-uses Model-View-ViewModel system architecture.
+The app uses web scraping using jsoup and Android WebView objects to asynchronously scrape the latest price offers from the websites of the supermarkets. It stores the data with Room database and updates the RecyclerView using Android LiveData objects. The app uses Model-View-ViewModel system architecture.
 
 
 ### Made with:
