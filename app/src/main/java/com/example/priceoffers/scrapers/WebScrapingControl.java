@@ -69,7 +69,7 @@ public class WebScrapingControl {
         Log.d(TAG, "tryToInsertOffers: trying to insert offers. Maxima finished = " + maximaScrapeFinished +
                 "; iki finished = " + ikiScrapeFinished + "; Lidl finished = " + lidlScrapeFinished);
         if (maximaScrapeFinished && ikiScrapeFinished && lidlScrapeFinished) {
-            repo.insert(allOffers);
+            repo.insertAll(allOffers);
         }
     }
 

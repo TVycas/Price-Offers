@@ -69,8 +69,8 @@ public class OffersRepository {
         }
     }
 
-    public void insert(List<Offer> offers) {
-        new insertAsyncTask(offerDao).execute(offers);
+    public void insertAll(List<Offer> offers) {
+        new insertAllAsyncTask(offerDao).execute(offers);
     }
 
     public void update(Offer offer) {
@@ -109,10 +109,10 @@ public class OffersRepository {
         void taskCompleted(List<Offer> offers);
     }
 
-    private static class insertAsyncTask extends AsyncTask<List<Offer>, Void, Void> {
+    private static class insertAllAsyncTask extends AsyncTask<List<Offer>, Void, Void> {
         private OfferDao asyncTaskDao;
 
-        insertAsyncTask(OfferDao offerDao) {
+        insertAllAsyncTask(OfferDao offerDao) {
             asyncTaskDao = offerDao;
         }
 
@@ -120,9 +120,7 @@ public class OffersRepository {
         @Override
         protected final Void doInBackground(List<Offer>... lists) {
             // Insert the offers to the database
-            for (Offer offer : lists[0]) {
-                asyncTaskDao.insert(offer);
-            }
+            asyncTaskDao.insertAll(lists[0]);
             return null;
         }
     }

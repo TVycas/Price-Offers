@@ -15,6 +15,9 @@ public interface OfferDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Offer offer);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<Offer> offers);
+
     @Query("DELETE FROM offer_table")
     void deleteAll();
 
