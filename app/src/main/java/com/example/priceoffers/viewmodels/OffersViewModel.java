@@ -45,7 +45,7 @@ public class OffersViewModel extends AndroidViewModel {
     }
 
     /**
-     * Transform the LiveData for the all offers list  to be based on the filter id selected by the user
+     * Transform the LiveData for the all offers list to be based on the filter id selected by the user
      *
      * @return An offer list encapsulated in LiveDate object
      */

@@ -5,14 +5,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
+
 class MaximaScraper extends Scraper {
 
-    private final String html;
-    private final String OFFERS_CONTAINER_CLASSNAME = "col-third";
+    private final String MAXIMA_URL;
+    private final String OFFERS_CONTAINER_CLASSNAME = "offer-page-sale-item offer-page-sale-item__actual";
     private final String SHOP_NAME = "Maxima";
 
-    MaximaScraper(String html) {
-        this.html = html;
+    MaximaScraper(String MAXIMA_URL) {
+        this.MAXIMA_URL = MAXIMA_URL;
     }
 
     @Override
@@ -22,7 +24,12 @@ class MaximaScraper extends Scraper {
 
     @Override
     Document getDocument() {
-        return Jsoup.parse(html);
+        try {
+            return Jsoup.connect(MAXIMA_URL).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
