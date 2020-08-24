@@ -39,37 +39,47 @@ public class UserCartFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_user_cart, container, false);
     }
 
-    //TODO add a filter option
+    //TODO add an option for filtering the offers.
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        TextView selectionInfoTextView = getView().findViewById(R.id.selection_info);
+
+        final OfferListAdapter cartListAdapter = setUpRecyclerView();
+
+        // Observe ViewModel
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(OffersViewModel.class);
+
+        // Update the cart as soon as the database changes.
+        viewModel.getSelectedOffers().observe(this, offers -> {
+            cartListAdapter.setDisplayedOffers(offers, true, true);
+        });
+        // Update the selection info TextView if selections change
+        viewModel.getUserSelectionInfo().observe(this, userSelectionInfo -> selectionInfoTextView.setText(userSelectionInfo));
+    }
+
+    /**
+     * Sets up the RecyclerView by initiating it with a LinearLayoutManager and a custom OfferListAdapter.
+     *
+     * @return The OfferListAdapter used to set up the RecyclerView.
+     */
+    private OfferListAdapter setUpRecyclerView() {
         // Set up the RecyclerView.
         RecyclerView recyclerView = getView().findViewById(R.id.user_cart_recyclerview);
         final OfferListAdapter cartListAdapter = new OfferListAdapter(getContext(), recyclerView);
         recyclerView.setAdapter(cartListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Get the offer object that was deselected by the user and update the database to mark the object as deselected
+        // Get the offer object that was selected by the user and update the database to mark the object as selected
         cartListAdapter.setOnCheckedChangedListener((view, isChecked, position) -> {
             Offer offer = cartListAdapter.getOfferAtPosition(position);
-            Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
             offer.setIsSelected(isChecked);
+            Log.i(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
             viewModel.updateOffer(offer);
         });
-
-        TextView selectionInfoTextView = getView().findViewById(R.id.selection_info);
-
-        // Observe ViewModel
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(OffersViewModel.class);
-        // Update the cart as soon as the database changes.
-        viewModel.getSelectedOffers().observe(this, offers -> {
-            cartListAdapter.setDisplayedOffers(offers, true, true);
-        });
-
-        // Update the selection info TextView if selections change
-        viewModel.getUserSelectionInfo().observe(this, userSelectionInfo -> selectionInfoTextView.setText(userSelectionInfo));
+        return cartListAdapter;
     }
 
 }
