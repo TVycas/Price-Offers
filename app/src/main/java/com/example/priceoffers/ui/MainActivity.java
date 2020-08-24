@@ -26,9 +26,9 @@ import java.util.Calendar;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getName();
     private OffersViewModel viewModel;
     private SharedPreferences sharedPref;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +39,18 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Create an instance of the tab layout from the view.
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        // Set the text for each tab.
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.all_offers_tab_label));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.user_cart_tab_label));
-        // Set the tabs to fill the entire layout.
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        setUpTabLayout();
+        setUpViewPager();
+        updateLastRefreshedTextView();
 
+        // Subscribe to the view model
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(OffersViewModel.class);
+    }
+
+    /**
+     * Uses the TabLayout to set up the ViewPager for the activity.
+     */
+    private void setUpViewPager() {
         // Use PagerAdapter to manage page views in fragments.
         // Each page is represented by its own fragment.
         final ViewPager viewPager = findViewById(R.id.pager);
@@ -67,11 +71,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) { /* no-op */ }
         });
+    }
 
-        updateLastRefreshedTextView();
-
-        // Subscribe to the view model
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(OffersViewModel.class);
+    /**
+     * Sets up the TabLayout.
+     */
+    private void setUpTabLayout() {
+        // Create an instance of the tab layout from the view.
+        tabLayout = findViewById(R.id.tab_layout);
+        // Set the text for each tab.
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.all_offers_tab_label));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.user_cart_tab_label));
+        // Set the tabs to fill the entire layout.
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
 
     /**
