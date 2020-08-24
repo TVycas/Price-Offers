@@ -72,7 +72,7 @@ public class UserCartFragment extends Fragment {
         recyclerView.setAdapter(cartListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Get the offer object that was selected by the user and update the database to mark the object as selected
+        // Get the offer object that was deselected by the user and update the database to mark the object as deselected
         cartListAdapter.setOnCheckedChangedListener((view, isChecked, position) -> {
             Offer offer = cartListAdapter.getOfferAtPosition(position);
             offer.setIsSelected(isChecked);

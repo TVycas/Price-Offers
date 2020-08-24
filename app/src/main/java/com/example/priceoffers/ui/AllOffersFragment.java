@@ -28,6 +28,7 @@ import com.example.priceoffers.viewmodels.OffersViewModel;
 public class AllOffersFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = AllOffersFragment.class.getName();
+
     private OffersViewModel viewModel;
 
     private boolean userSelectedOffer = false;
@@ -40,7 +41,6 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,20 +52,9 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Set up the RecyclerView.
-        RecyclerView recyclerView = getView().findViewById(R.id.all_offers_recyclerview);
-        final OfferListAdapter offerListAdapter = new OfferListAdapter(getContext(), recyclerView);
-        recyclerView.setAdapter(offerListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Get the offer object that was selected by the user and update the database to mark the object as selected
-        offerListAdapter.setOnCheckedChangedListener((view, isChecked, position) -> {
-            Offer offer = offerListAdapter.getOfferAtPosition(position);
-            Log.d(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
-            offer.setIsSelected(isChecked);
-            userSelectedOffer = true;
-            viewModel.updateOffer(offer);
-        });
+        final OfferListAdapter offerListAdapter = setUpRecyclerView();
+        setUpSearchView(offerListAdapter);
+        setUpFiltersSpinner();
 
         // Observe ViewModel to display the list of offers
         viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(OffersViewModel.class);
@@ -75,32 +64,54 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
                 getActivity().findViewById(R.id.progress_circular).setVisibility(View.GONE);
             }
 
-            // Multiple settings for list update control
+            // Multiple settings for list update control.
             if (userSelectedOffer && queryText.equals("")) {
-                // User selected an offer
+                // User selected an offer.
                 offerListAdapter.setDisplayedOffers(offers, false, true);
                 userSelectedOffer = false;
             } else if (userSelectedOffer) {
-                // User selected and offer while searching for offers
+                // User selected and offer while searching for offers.
                 offerListAdapter.setDisplayedOffers(offers, false, false);
                 offerListAdapter.getFilter().filter(queryText);
                 userSelectedOffer = false;
             } else if (!queryText.equals("")) {
-                // User is searching of offers
+                // User is searching of offers.
                 offerListAdapter.setDisplayedOffers(offers, true, false);
                 offerListAdapter.getFilter().filter(queryText);
             } else {
+                // User refreshed the offers.
                 offerListAdapter.setDisplayedOffers(offers, true, true);
             }
         });
 
-        // Set up the search view to search offers
+
+    }
+
+    /**
+     * Sets up the Spinner used to select the filter of the offer list.
+     */
+    private void setUpFiltersSpinner() {
+        // Set up spinner for filtering the offers
+        Spinner filtersSpinner = getView().findViewById(R.id.filters_spinner);
+        ArrayAdapter<CharSequence> filterSpinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.filter_names, android.R.layout.simple_spinner_item);
+        filterSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filtersSpinner.setAdapter(filterSpinnerAdapter);
+        filtersSpinner.setOnItemSelectedListener(this);
+    }
+
+    /**
+     * Sets up the SearchView of the fragment.
+     *
+     * @param offerListAdapter The adapter used in the RecyclerView.
+     */
+    private void setUpSearchView(OfferListAdapter offerListAdapter) {
         SearchView searchView = getView().findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (!queryText.equals(""))
+                if (!queryText.equals("")) {
                     offerListAdapter.getFilter().filter(queryText);
+                }
 
                 return false;
             }
@@ -113,18 +124,34 @@ public class AllOffersFragment extends Fragment implements AdapterView.OnItemSel
                 return false;
             }
         });
+    }
 
-        // Set up spinner for filtering the offers
-        Spinner filtersSpinner = getView().findViewById(R.id.filters_spinner);
-        ArrayAdapter<CharSequence> filterSpinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.filter_names, android.R.layout.simple_spinner_item);
-        filterSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filtersSpinner.setAdapter(filterSpinnerAdapter);
-        filtersSpinner.setOnItemSelectedListener(this);
+    /**
+     * Sets up the RecyclerView by initiating it with a LinearLayoutManager and a custom OfferListAdapter.
+     *
+     * @return The OfferListAdapter used to set up the RecyclerView.
+     */
+    private OfferListAdapter setUpRecyclerView() {
+        // Set up the RecyclerView.
+        RecyclerView recyclerView = getView().findViewById(R.id.all_offers_recyclerview);
+        final OfferListAdapter offerListAdapter = new OfferListAdapter(getContext(), recyclerView);
+        recyclerView.setAdapter(offerListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Get the offer object that was selected by the user and update the database to mark the object as selected
+        offerListAdapter.setOnCheckedChangedListener((view, isChecked, position) -> {
+            Offer offer = offerListAdapter.getOfferAtPosition(position);
+            offer.setIsSelected(isChecked);
+            Log.i(TAG, "onCheckedChanged: Checked status changed to " + offer.getIsSelected() + " for " + offer.getTITLE());
+            userSelectedOffer = true;
+            viewModel.updateOffer(offer);
+        });
+        return offerListAdapter;
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // When the user changes the filter setting, notify the viewModel to give a different LiveData object based on the filter value
+        // When the user changes the filter setting, notify the ViewModel to give a different LiveData object based on the filter value
         viewModel.filterOffers(position);
     }
 
