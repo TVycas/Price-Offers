@@ -4,7 +4,7 @@ An Android app for a quick and straightforward lookup of various price offers fo
 
 The users can sort the offers in multiple categories, search for a specific offer, and select the offers they wish to save for future reference.
 
-The app uses web scraping using jsoup and Android WebView objects to asynchronously scrape the latest price offers from the websites of the supermarkets. It stores the data with Room database and updates the RecyclerView using Android LiveData objects. The app uses Model-View-ViewModel system architecture.
+The app uses web scraping using jsoup to asynchronously scrape the latest price offers from the websites of the supermarkets. It stores the data with Room database and updates the RecyclerView using Android LiveData objects. The app uses Model-View-ViewModel system architecture.
 
 
 ### Made with:
@@ -13,8 +13,6 @@ The app uses web scraping using jsoup and Android WebView objects to asynchronou
 * LiveData objects
 * Room Database
 * [jsoup web parser library](https://jsoup.org/)
-* Android WebView objects for JavaScript interactions with supermarket
-  websites
 * Android Fragments
 * Android RecyclerViews
 
