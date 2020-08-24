@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.priceoffers.R;
+import com.example.priceoffers.adapters.PagerAdapter;
 import com.example.priceoffers.viewmodels.OffersViewModel;
 import com.google.android.material.tabs.TabLayout;
 

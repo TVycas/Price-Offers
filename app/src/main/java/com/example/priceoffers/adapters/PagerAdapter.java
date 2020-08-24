@@ -1,9 +1,12 @@
-package com.example.priceoffers.ui;
+package com.example.priceoffers.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.priceoffers.ui.AllOffersFragment;
+import com.example.priceoffers.ui.UserCartFragment;
 
 /**
  * A simple {@link FragmentPagerAdapter} for switching between the two fragments of the UI
@@ -11,7 +14,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class PagerAdapter extends FragmentPagerAdapter {
     private int numOfTabs;
 
-    PagerAdapter(@NonNull FragmentManager fm, int behavior) {
+    public PagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
         this.numOfTabs = behavior;
     }

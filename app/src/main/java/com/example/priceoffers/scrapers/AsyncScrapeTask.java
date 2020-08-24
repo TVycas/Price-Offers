@@ -26,7 +26,7 @@ public class AsyncScrapeTask extends AsyncTask<Void, Void, List<Offer>> {
 
         ArrayList<Offer> offers = scraper.scrapeOffers();
 
-        Log.d(TAG, "doInBackground: " + scraper.getShopName() + " scraping finished, loaded " + offers.size() + " offers.");
+        Log.i(TAG, "doInBackground: " + scraper.getShopName() + " scraping finished, loaded " + offers.size() + " offers.");
 
         return offers;
     }

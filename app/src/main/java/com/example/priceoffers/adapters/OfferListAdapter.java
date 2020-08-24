@@ -1,4 +1,4 @@
-package com.example.priceoffers.ui;
+package com.example.priceoffers.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import com.example.priceoffers.database.Offer;
 import java.util.ArrayList;
 import java.util.List;
 
-class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHolder> implements Filterable {
+public class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHolder> implements Filterable {
 
     private final LayoutInflater inflater;
     /**
@@ -77,12 +77,12 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         }
     };
 
-    OfferListAdapter(Context context, RecyclerView recyclerView) {
+    public OfferListAdapter(Context context, RecyclerView recyclerView) {
         inflater = LayoutInflater.from(context);
         this.recyclerView = recyclerView;
     }
 
-    void setDisplayedOffers(List<Offer> offers, boolean shouldMoveListToTop, boolean shouldNotifyDataChanged) {
+    public void setDisplayedOffers(List<Offer> offers, boolean shouldMoveListToTop, boolean shouldNotifyDataChanged) {
         if (offers != null) {
             // Make lists for storing and displaying the offers
             displayedOffers = offers;
@@ -148,7 +148,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         }
     }
 
-    Offer getOfferAtPosition(int position) {
+    public Offer getOfferAtPosition(int position) {
         return displayedOffers.get(position);
     }
 
@@ -162,7 +162,7 @@ class OfferListAdapter extends RecyclerView.Adapter<OfferListAdapter.OfferViewHo
         return position;
     }
 
-    void setOnCheckedChangedListener(CheckedChangeListener listener) {
+    public void setOnCheckedChangedListener(CheckedChangeListener listener) {
         checkedListener = listener;
     }
 

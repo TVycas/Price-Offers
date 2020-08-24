@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.priceoffers.R;
+import com.example.priceoffers.adapters.OfferListAdapter;
 import com.example.priceoffers.database.Offer;
 import com.example.priceoffers.viewmodels.OffersViewModel;
 
